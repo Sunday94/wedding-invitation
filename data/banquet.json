@@ -1,0 +1,110 @@
+{
+    "categories": [
+        "All",
+        "Appetizers",
+        "Main Course",
+        "Dessert",
+        "Beverages"
+    ],
+    "dietaryOptions": [
+        {
+            "id": "vegan",
+            "label": "Vegan",
+            "icon": "eco"
+        },
+        {
+            "id": "vegetarian",
+            "label": "Vegetarian",
+            "icon": "grass"
+        },
+        {
+            "id": "gluten-free",
+            "label": "Gluten-Free",
+            "icon": "grain"
+        },
+        {
+            "id": "nut-free",
+            "label": "Nut-Free",
+            "icon": "health_and_safety"
+        },
+        {
+            "id": "chicken",
+            "label": "Chicken",
+            "icon": "restaurant"
+        },
+        {
+            "id": "beef",
+            "label": "Beef",
+            "icon": "kebab_dining"
+        },
+        {
+            "id": "fish",
+            "label": "Fish",
+            "icon": "set_meal"
+        },
+        {
+            "id": "seafood",
+            "label": "Seafood",
+            "icon": "phishing"
+        }
+    ],
+    "dishes": [
+        {
+            "id": 1,
+            "name": "Truffle Arancini",
+            "category": "Appetizers",
+            "description": "Crispy risotto balls with wild mushrooms, black truffle oil, and aged parmesan center.",
+            "dietary": [
+                "vegetarian",
+                "nut-free"
+            ],
+            "isChefsChoice": true
+        },
+        {
+            "id": 2,
+            "name": "Wagyu Beef Medallions",
+            "category": "Main Course",
+            "description": "Pan-seared A5 Wagyu served with red wine reduction and roasted seasonal root vegetables.",
+            "dietary": [
+                "beef",
+                "gluten-free",
+                "nut-free"
+            ],
+            "isChefsChoice": false
+        },
+        {
+            "id": 3,
+            "name": "Pan-Seared Scallops",
+            "category": "Appetizers",
+            "description": "Jumbo scallops with cauliflower purée, crispy pancetta, and herb-infused oil.",
+            "dietary": [
+                "seafood",
+                "gluten-free"
+            ],
+            "isChefsChoice": false
+        },
+        {
+            "id": 4,
+            "name": "Wild Mushroom Risotto",
+            "category": "Main Course",
+            "description": "Creamy Arborio rice with porcini and chantarelle mushrooms, finished with truffle butter.",
+            "dietary": [
+                "vegetarian",
+                "gluten-free",
+                "nut-free"
+            ],
+            "isChefsChoice": true
+        },
+        {
+            "id": 5,
+            "name": "Chocolate Lava Cake",
+            "category": "Dessert",
+            "description": "Warm dark chocolate cake with a molten center, served with Madagascan vanilla gelato.",
+            "dietary": [
+                "vegetarian",
+                "nut-free"
+            ],
+            "isChefsChoice": false
+        }
+    ]
+}

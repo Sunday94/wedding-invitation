@@ -1,0 +1,73 @@
+/**
+ * Dummy Data for the Wedding Designer App
+ * This file contains all the placeholder data used in the application.
+ * By using JSONC (JSON with Comments), we can document the structure and usage of the data.
+ */
+{
+    "couple": {
+        "names": "Sarah & James", // Display names for dashboard
+        "initials": "S & J",
+        "fullNames": {
+            "partner1": "Sarah Emily",
+            "partner2": "James Arthur"
+        },
+        // The story displayed on the dashboard
+        "story": {
+            "title": "Our Story",
+            "text": "We met in the heart of London, both seeking refuge from a sudden summer shower in a small bookstore. From that rainy Tuesday, our lives became a shared chapter of laughter, travel, and unconditional support.",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBjz1nPnJqfrFA5q-NL_I6l88F4xxCqqKB4DlpX6KisRGgPYEysvD09cYsL1wiLKPTC5-RN56NN0LQ8BWNnq9H3TQclp3Q1-mxvP0eWn_nHVvymYpRsCrFaXR3oG033FWuQSnmEWpxbxxB5mL2tMk4iQSlZuPjQNhyl9XFx7FMNYPVW8mNYdDVo98AgUG0oXjaO3LCMcgMYI7Et2rAxd_7RR-yoxh2fGwUFzer3P8rShgiYU-vcE13h9zChrn8jpMu2x0jYbEfnCdmc",
+            "metYear": 2020,
+            "engagedYear": 2023
+        }
+    },
+    "wedding": {
+        "date": "2024-10-26T16:00:00",
+        "dateString": "Saturday, October 26th, 2024",
+        "venue": {
+            "name": "Castello di Amorosa",
+            "address": "4045 St Helena Hwy, Calistoga, CA",
+            "location": "Napa Valley, California", // General location
+            // Main venue image
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDDLdSz0dKQtleNJWQJ0wA6AYX3w3q0Y5jVD1qO1aVwjx5M03NwwS__IjBCEL4g2b7Hdt4ABJ1MKpKLpaQsQTG-ZAgpYttzt7u77q3mzMfIV7tgoAEgU_ioJhwPWYLXhrjQTxWYi1L0MNerJ0qoMWkLVK0_mfEh9ihhQ3909EI28VyIFmZwAIcuLH1w9nB0JXYEkIjtwgkBlqMAOY64-F6PJ7Do_gvUvjwjUfu4e07eN3-OCDKJZMEwE7k1fSkQZ4s4ykJTL2rI1IZn"
+        },
+        // Image for the Welcome Screen background
+        "welcomeImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuBLGIFvcRjw9IFXVsaGmiAHqGc-M5gZZ1GGAelrl6AzU6VIlFY2Khfklo_dj-sAzh29fD5bcbrwTbkrvHnsjjGzWtMbvGxsLD02ubEHaD45wjLw_xgDV7h08mq9VhCaAtTuv-kQR5o28KNWGyx5M-DUIo53_VLL-2UsTJlD1FV1cvyWrxGPHpJmgj5ryMZyBCTqRk8LXqYPcCShggI3QSyHgtOgF812cBvSekKu06olVwbMrWWDgScSYzQM6eb-2YL991TC7b6cOuTk",
+        "calendarDescription": "Join us for our special day! See more details on our wedding website.",
+        "attire": {
+            "title": "Black Tie Optional",
+            "description": "We'd love to see you in your finest! Think tuxedos, dark suits, or floor-length gowns. Elegant cocktail attire is also welcome."
+        }
+    },
+    "timeline": [
+        {
+            "time": "4:00 PM",
+            "title": "The Ceremony",
+            "icon": "church",
+            "location": "The Courtyard Terrace",
+            "address": "4045 St Helena Hwy, Calistoga, CA",
+            "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAJnalMrLAD7N3c4uqVW1ch46ISfLIBzEYpEUPncEUwBHUkZtPMlIrKbKNnjAfC5ObB_elgjb_CHe7ci8Er5HJN3HA8NYVCDUF8Snm1a-X4eq9a0UckmhoHrjCevISm98qNCS3yQDZDKrLJJ0p2xyK5SftXWoXa-hmZiT1J_BHOlkwhR3j5UODAyNFN6456U_JTzJIlCQVgNOeoesHSgNN7ZbPxy9-EluxIe5zEtpQc8h9plbC217t2-yF4zS1lTrFC3duXgvoIOgVS"
+        },
+        {
+            "time": "6:00 PM",
+            "title": "The Reception",
+            "icon": "restaurant",
+            "location": "The Great Hall",
+            "address": "Dinner & Dancing to follow",
+            "isLast": true,
+            "details": [
+                {
+                    "label": "Dinner",
+                    "value": "7:30 PM - Late",
+                    "subValue": "Italian-Californian Fusion",
+                    "icon": "celebration"
+                },
+                {
+                    "label": "Dress Code",
+                    "value": "Black Tie Optional",
+                    "subValue": "Elegant cocktail attire welcome",
+                    "icon": "checkroom"
+                }
+            ]
+        }
+    ]
+}

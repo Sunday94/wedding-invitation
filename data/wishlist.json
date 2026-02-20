@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "title": "Breville Espresso Machine",
+        "category": "Kitchen Appliances",
+        "price": 699.00,
+        "image": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?q=80\u0026w=1000\u0026auto=format\u0026fit=crop",
+        "purchased": true
+    },
+    {
+        "id": "2",
+        "title": "Honeymoon Fund",
+        "category": "Gift Money",
+        "price": 5000.00,
+        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80\u0026w=1000\u0026auto=format\u0026fit=crop",
+        "purchased": false
+    },
+    {
+        "id": "3",
+        "title": "Egyptian Cotton Linen Set",
+        "category": "Bedding & Linen",
+        "price": 350.00,
+        "image": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80\u0026w=1000\u0026auto=format\u0026fit=crop",
+        "purchased": false
+    },
+    {
+        "id": "4",
+        "title": "KitchenAid Stand Mixer",
+        "category": "Kitchen Appliances",
+        "price": 449.99,
+        "image": "https://images.unsplash.com/photo-1594385208974-2e75f9d8ad48?q=80\u0026w=1000\u0026auto=format\u0026fit=crop",
+        "purchased": false
+    },
+    {
+        "id": "5",
+        "title": "Dyson V15 Vacuum",
+        "category": "Home Appliances",
+        "price": 749.00,
+        "image": "https://images.unsplash.com/photo-1558317374-067fb5f30001?q=80\u0026w=1000\u0026auto=format\u0026fit=crop",
+        "purchased": false
+    }
+]

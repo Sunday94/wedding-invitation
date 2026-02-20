@@ -1,0 +1,284 @@
+{
+    "welcome": [
+        {
+            "id": 1,
+            "label": "Classic Ivory",
+            "accent": "#c8a96e",
+            "description": "Elegant serif text on a soft ivory overlay"
+        },
+        {
+            "id": 2,
+            "label": "Midnight Rose",
+            "accent": "#9b2335",
+            "description": "Deep crimson tones with a dark romantic feel"
+        },
+        {
+            "id": 3,
+            "label": "Garden Blush",
+            "accent": "#e8a0a0",
+            "description": "Soft pink gradient with floral accents"
+        },
+        {
+            "id": 4,
+            "label": "Sage & Linen",
+            "accent": "#7d9b76",
+            "description": "Earthy greens and warm neutral tones"
+        },
+        {
+            "id": 5,
+            "label": "Navy Formal",
+            "accent": "#1e3a5f",
+            "description": "Bold navy background, crisp white typography"
+        },
+        {
+            "id": 6,
+            "label": "Dusty Lavender",
+            "accent": "#9b88b4",
+            "description": "Soft purple hues, dreamy and romantic"
+        },
+        {
+            "id": 7,
+            "label": "Golden Hour",
+            "accent": "#d4813a",
+            "description": "Warm amber and gold sunset tones"
+        },
+        {
+            "id": 8,
+            "label": "Charcoal Modern",
+            "accent": "#3a3a3a",
+            "description": "Minimalist dark grey with clean lines"
+        },
+        {
+            "id": 9,
+            "label": "Peach Blossom",
+            "accent": "#e8a87c",
+            "description": "Warm peach with soft script typography"
+        },
+        {
+            "id": 10,
+            "label": "Forest Emerald",
+            "accent": "#2d6a4f",
+            "description": "Rich emerald green, lush and refined"
+        },
+        {
+            "id": 11,
+            "label": "Terracotta Boho",
+            "accent": "#b5533c",
+            "description": "Earthy terracotta with bohemian flair"
+        },
+        {
+            "id": 12,
+            "label": "Pearl & Silver",
+            "accent": "#b0bec5",
+            "description": "Cool silver tones with an icy elegance"
+        },
+        {
+            "id": 13,
+            "label": "Champagne Toast",
+            "accent": "#e8d5a3",
+            "description": "Light champagne golds, festive and bright"
+        },
+        {
+            "id": 14,
+            "label": "Dusty Blue",
+            "accent": "#7ba7bc",
+            "description": "Muted blue, airy and light"
+        },
+        {
+            "id": 15,
+            "label": "Obsidian Luxe",
+            "accent": "#1a1a2e",
+            "description": "Ultra-dark, high-contrast luxury design"
+        }
+    ],
+    "loading": [
+        {
+            "id": 1,
+            "label": "Heartbeat",
+            "accent": "#c8a96e",
+            "description": "Pulsing heart icon with a gold progress bar"
+        },
+        {
+            "id": 2,
+            "label": "Petal Rain",
+            "accent": "#e8a0a0",
+            "description": "Falling petals animation on blush background"
+        },
+        {
+            "id": 3,
+            "label": "Ring Shine",
+            "accent": "#ffd700",
+            "description": "Spinning ring with a shimmer effect"
+        },
+        {
+            "id": 4,
+            "label": "Golden Heart",
+            "accent": "#c8a96e",
+            "description": "Elegant gold concentric circles with heart"
+        },
+        {
+            "id": 5,
+            "label": "Candle Flicker",
+            "accent": "#d4813a",
+            "description": "Warm candlelight flicker animation"
+        },
+        {
+            "id": 6,
+            "label": "Starfield",
+            "accent": "#1e3a5f",
+            "description": "Stars appearing on a deep navy background"
+        },
+        {
+            "id": 7,
+            "label": "Botanical Grow",
+            "accent": "#7d9b76",
+            "description": "Vine and leaf drawing animation"
+        },
+        {
+            "id": 8,
+            "label": "Script Writing",
+            "accent": "#9b88b4",
+            "description": "Couple's names write themselves in script"
+        },
+        {
+            "id": 9,
+            "label": "Minimal Dots",
+            "accent": "#b0bec5",
+            "description": "Three minimalist bouncing dots on white"
+        },
+        {
+            "id": 10,
+            "label": "Lace Weave",
+            "accent": "#e8d5a3",
+            "description": "Delicate lace pattern builds on screen"
+        },
+        {
+            "id": 11,
+            "label": "Ribbon Unfurl",
+            "accent": "#9b2335",
+            "description": "Red ribbon unrolls to reveal the date"
+        },
+        {
+            "id": 12,
+            "label": "Hourglass",
+            "accent": "#7ba7bc",
+            "description": "Elegant hourglass counting down"
+        },
+        {
+            "id": 13,
+            "label": "Champagne Bubbles",
+            "accent": "#e8d5a3",
+            "description": "Rising champagne bubbles on warm gold"
+        },
+        {
+            "id": 14,
+            "label": "Diamond Shimmer",
+            "accent": "#b0bec5",
+            "description": "Diamond icon with a sparkling CSS effect"
+        },
+        {
+            "id": 15,
+            "label": "Dark Elegance",
+            "accent": "#1a1a2e",
+            "description": "Ultra-dark loader with subtle glow"
+        }
+    ],
+    "dashboard": [
+        {
+            "id": 1,
+            "label": "Classic Cards",
+            "accent": "#c8a96e",
+            "description": "Warm ivory cards with gold borders"
+        },
+        {
+            "id": 2,
+            "label": "Magazine Layout",
+            "accent": "#3a3a3a",
+            "description": "Editorial grid with bold section headers"
+        },
+        {
+            "id": 3,
+            "label": "Botanical",
+            "accent": "#7d9b76",
+            "description": "Green-accented cards with leaf motifs"
+        },
+        {
+            "id": 4,
+            "label": "Luxe Dark",
+            "accent": "#1a1a2e",
+            "description": "Dark background with gold-trimmed cards"
+        },
+        {
+            "id": 5,
+            "label": "Blush Romance",
+            "accent": "#e8a0a0",
+            "description": "Soft pink palette, rounded card corners"
+        },
+        {
+            "id": 6,
+            "label": "Minimal White",
+            "accent": "#f5f5f5",
+            "description": "Ultra-clean white with thin dividers"
+        },
+        {
+            "id": 7,
+            "label": "Navy & Ivory",
+            "accent": "#1e3a5f",
+            "description": "Navy header bars with ivory content areas"
+        },
+        {
+            "id": 8,
+            "label": "Terracotta Boho",
+            "accent": "#b5533c",
+            "description": "Earthy warm palette with organic shapes"
+        },
+        {
+            "id": 9,
+            "label": "Lavender Dream",
+            "accent": "#9b88b4",
+            "description": "Soft purple with script headings"
+        },
+        {
+            "id": 10,
+            "label": "Golden Gala",
+            "accent": "#d4813a",
+            "description": "Warm golden amber, festive and rich"
+        },
+        {
+            "id": 11,
+            "label": "Dusty Blue",
+            "accent": "#7ba7bc",
+            "description": "Calm blue tones with serif typography"
+        },
+        {
+            "id": 12,
+            "label": "Forest Retreat",
+            "accent": "#2d6a4f",
+            "description": "Deep green with earthy natural tones"
+        },
+        {
+            "id": 13,
+            "label": "Pearl Shimmer",
+            "accent": "#b0bec5",
+            "description": "Cool silver with a soft glossy finish"
+        },
+        {
+            "id": 14,
+            "label": "Champagne Fizz",
+            "accent": "#e8d5a3",
+            "description": "Light and airy champagne palette"
+        },
+        {
+            "id": 15,
+            "label": "Midnight Black",
+            "accent": "#0d0d0d",
+            "description": "Pure black with stark white text"
+        },
+        {
+            "id": 16,
+            "label": "Modern Layout",
+            "accent": "#c8a96e",
+            "description": "A fresh take on the dashboard with a modern layout"
+        }
+    ]
+}
