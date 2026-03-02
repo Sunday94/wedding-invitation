@@ -7,7 +7,12 @@
             { "id": "allura", "family": "Allura", "fallback": "cursive", "googleFamily": "Allura" },
             { "id": "parisienne", "family": "Parisienne", "fallback": "cursive", "googleFamily": "Parisienne" },
             { "id": "alex-brush", "family": "Alex Brush", "fallback": "cursive", "googleFamily": "Alex+Brush" },
-            { "id": "tangerine", "family": "Tangerine", "fallback": "cursive", "googleFamily": "Tangerine:wght@400;700" }
+            { "id": "tangerine", "family": "Tangerine", "fallback": "cursive", "googleFamily": "Tangerine:wght@400;700" },
+            { "id": "monsieur-la-doulaise", "family": "Monsieur La Doulaise", "fallback": "cursive", "googleFamily": "Monsieur+La+Doulaise" },
+            { "id": "petit-formal-script", "family": "Petit Formal Script", "fallback": "cursive", "googleFamily": "Petit+Formal+Script" },
+            { "id": "italianno", "family": "Italianno", "fallback": "cursive", "googleFamily": "Italianno" },
+            { "id": "mea-culpa", "family": "Mea Culpa", "fallback": "cursive", "googleFamily": "Mea+Culpa" },
+            { "id": "qwigley", "family": "Qwigley", "fallback": "cursive", "googleFamily": "Qwigley" }
         ]
     },
     "loading": {
