@@ -2,6 +2,7 @@ export interface RemoteDesignSettings {
     front_design_id?: string | null;
     loading_design_id?: string | null;
     dashboard_design_id?: string | null;
+    welcome_text?: string | null;
 }
 
 export interface SyncedDesignSelection {

@@ -5,7 +5,8 @@ import WelcomeVariant from './screens/WelcomeVariant';
 import LoadingVariant from './screens/LoadingVariant';
 import DashboardVariant from './screens/DashboardVariant';
 import { buildApiUrl, FRONTEND_CLIENT_ID } from './services/apiConfig';
-import { mapRemoteDesignToSelection, SyncedDesignSelection } from './services/designSync';
+import { mapRemoteDesignToSelection, RemoteDesignSettings, SyncedDesignSelection } from './services/designSync';
+import { setWelcomeCopySource } from './screens/welcome/welcomeTextBindings';
 
 export type ScreenState = 'selector' | 'welcome' | 'loading' | 'dashboard';
 
@@ -13,6 +14,16 @@ const STORAGE_KEY = 'weddingDesignSelection';
 const URL_OVERRIDE_KEYS = ['welcome', 'loading', 'dashboard'] as const;
 
 type SavedSelection = SyncedDesignSelection;
+type RemoteWelcomeDetails = {
+  bride_display_name?: string | null;
+  groom_display_name?: string | null;
+  event_date?: string | null;
+  wedding_venue?: string | null;
+  wedding_address?: string | null;
+} | null;
+type RemoteOverview = {
+  event_date?: string | null;
+} | null;
 
 const hasUrlOverrides = (): boolean => {
   const params = new URLSearchParams(window.location.search);
@@ -67,14 +78,29 @@ const getInitialActiveVariants = (): SavedSelection => {
   };
 };
 
-const fetchRemoteDesignSelection = async (): Promise<SavedSelection | null> => {
+const fetchRemoteDesignSettings = async (): Promise<RemoteDesignSettings | null> => {
   const response = await fetch(buildApiUrl('/api/design', { client_id: FRONTEND_CLIENT_ID }));
   if (!response.ok) {
     throw new Error(`Design sync failed with status ${response.status}`);
   }
 
-  const payload = await response.json();
-  return mapRemoteDesignToSelection(payload);
+  return response.json();
+};
+
+const fetchRemoteWelcomeDetails = async (): Promise<RemoteWelcomeDetails> => {
+  const response = await fetch(buildApiUrl('/api/details', { client_id: FRONTEND_CLIENT_ID }));
+  if (!response.ok) {
+    throw new Error(`Wedding details sync failed with status ${response.status}`);
+  }
+  return response.json();
+};
+
+const fetchRemoteOverview = async (): Promise<RemoteOverview> => {
+  const response = await fetch(buildApiUrl('/api/overview', { client_id: FRONTEND_CLIENT_ID }));
+  if (!response.ok) {
+    throw new Error(`Overview sync failed with status ${response.status}`);
+  }
+  return response.json();
 };
 
 const InnerApp: React.FC = () => {
@@ -92,18 +118,37 @@ const InnerApp: React.FC = () => {
     let isCancelled = false;
 
     const syncDesignFromBackend = async () => {
-      if (hasUrlOverrides()) {
-        setIsSyncLoading(false);
-        return;
-      }
+      setWelcomeCopySource(null);
 
       try {
-        const remoteSelection = await fetchRemoteDesignSelection();
-        if (!remoteSelection || isCancelled) return;
+        const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult] = await Promise.allSettled([
+          fetchRemoteDesignSettings(),
+          fetchRemoteWelcomeDetails(),
+          fetchRemoteOverview()
+        ]);
+        if (isCancelled) return;
 
-        setActiveVariants(remoteSelection);
-        saveConfirmedSelection(remoteSelection);
-        setCurrentScreen('welcome');
+        const remoteDesign = remoteDesignResult.status === 'fulfilled' ? remoteDesignResult.value : null;
+        const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
+        const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
+
+        setWelcomeCopySource({
+          welcome_text: remoteDesign?.welcome_text ?? null,
+          bride_display_name: remoteDetails?.bride_display_name ?? null,
+          groom_display_name: remoteDetails?.groom_display_name ?? null,
+          event_date: remoteDetails?.event_date || remoteOverview?.event_date || null,
+          wedding_venue: remoteDetails?.wedding_venue ?? null,
+          wedding_address: remoteDetails?.wedding_address ?? null
+        });
+
+        if (!hasUrlOverrides()) {
+          const remoteSelection = mapRemoteDesignToSelection(remoteDesign);
+          if (remoteSelection) {
+            setActiveVariants(remoteSelection);
+            saveConfirmedSelection(remoteSelection);
+            setCurrentScreen('welcome');
+          }
+        }
       } catch (error) {
         console.error('Failed to sync remote design settings:', error);
       } finally {

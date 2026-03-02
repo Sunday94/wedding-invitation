@@ -4,6 +4,15 @@ interface SourceMap {
     [key: string]: unknown;
 }
 
+interface RuntimeWelcomeSource {
+    welcome_text?: string | null;
+    bride_display_name?: string | null;
+    groom_display_name?: string | null;
+    event_date?: string | null;
+    wedding_venue?: string | null;
+    wedding_address?: string | null;
+}
+
 export interface WelcomeCopy {
     welcomeText: string;
     brideDisplayName: string;
@@ -15,12 +24,30 @@ export interface WelcomeCopy {
 }
 
 const INVITATION_LABEL = 'Wedding Inviation';
+let runtimeWelcomeSource: RuntimeWelcomeSource = {};
 
 const pickString = (value: unknown, fallback: string): string => {
     if (typeof value === 'string' && value.trim().length > 0) {
         return value;
     }
     return fallback;
+};
+
+const formatEventDate = (value: string): string => {
+    const trimmed = value.trim();
+    if (!trimmed) return trimmed;
+    const parsed = new Date(trimmed);
+    if (Number.isNaN(parsed.getTime())) return trimmed;
+    return parsed.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+};
+
+export const setWelcomeCopySource = (source?: RuntimeWelcomeSource | null): void => {
+    runtimeWelcomeSource = source ?? {};
 };
 
 export const splitDisplayName = (fullName: string): [string, string] => {
@@ -36,14 +63,33 @@ export const getWelcomeCopy = (): WelcomeCopy => {
     const couple = (source.couple ?? {}) as SourceMap;
     const fullNames = (couple.fullNames ?? {}) as SourceMap;
     const venue = (wedding.venue ?? {}) as SourceMap;
+    const eventDate = pickString(
+        runtimeWelcomeSource.event_date,
+        pickString(source.event_date, pickString(wedding.dateString, ''))
+    );
 
     return {
-        welcomeText: pickString(source.welcome_text, 'Together with their families'),
-        brideDisplayName: pickString(source.bride_display_name, pickString(fullNames.partner1, '')),
-        groomDisplayName: pickString(source.groom_display_name, pickString(fullNames.partner2, '')),
-        eventDate: pickString(source.event_date, pickString(wedding.dateString, '')),
-        weddingVenue: pickString(source.wedding_venue, pickString(venue.name, '')),
-        weddingAddress: pickString(source.wedding_address, pickString(venue.location, '')),
+        welcomeText: pickString(
+            runtimeWelcomeSource.welcome_text,
+            pickString(source.welcome_text, 'Together with their families')
+        ),
+        brideDisplayName: pickString(
+            runtimeWelcomeSource.bride_display_name,
+            pickString(source.bride_display_name, pickString(fullNames.partner1, ''))
+        ),
+        groomDisplayName: pickString(
+            runtimeWelcomeSource.groom_display_name,
+            pickString(source.groom_display_name, pickString(fullNames.partner2, ''))
+        ),
+        eventDate: formatEventDate(eventDate),
+        weddingVenue: pickString(
+            runtimeWelcomeSource.wedding_venue,
+            pickString(source.wedding_venue, pickString(venue.name, ''))
+        ),
+        weddingAddress: pickString(
+            runtimeWelcomeSource.wedding_address,
+            pickString(source.wedding_address, pickString(venue.location, ''))
+        ),
         invitationLabel: INVITATION_LABEL
     };
 };
