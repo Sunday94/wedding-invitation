@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { buildApiUrl, FRONTEND_CLIENT_ID } from '../services/apiConfig';
 
 interface RSVPPopupProps {
     isOpen: boolean;
@@ -54,11 +55,36 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, we'd send data to an API
-        console.log('RSVP Submitted:', { name, groupType, numPeople, rsvpStatus, reason, dietary });
-        onClose();
+
+        const rsvpData = {
+            client_id: FRONTEND_CLIENT_ID,
+            name,
+            email: `${name.toLowerCase().replace(/\s+/g, '.')}@example.com`, // Placeholder email
+            status: rsvpStatus === 'Accept' ? 'Confirmed' : 'Decline',
+            group_name: groupType,
+            meal_choice: dietary.join(', '),
+            plus_one: numPeople === '2'
+        };
+
+        try {
+            const response = await fetch(buildApiUrl('/api/guests'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(rsvpData)
+            });
+
+            if (response.ok) {
+                console.log('RSVP Submitted successfully');
+                onClose();
+                // Optional: Show success toast
+            } else {
+                console.error('RSVP submission failed');
+            }
+        } catch (error) {
+            console.error('Error submitting RSVP:', error);
+        }
     };
 
     const isLocked = groupType === 'Partner' || groupType === 'Single';

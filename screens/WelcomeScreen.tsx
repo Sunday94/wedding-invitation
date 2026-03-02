@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { getWelcomeCopy } from './welcome/welcomeTextBindings';
 
 interface WelcomeScreenProps {
   onOpen: () => void;
@@ -8,6 +9,8 @@ interface WelcomeScreenProps {
 import { data } from '../data';
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onOpen }) => {
+  const welcomeCopy = getWelcomeCopy();
+
   return (
     <div className="relative h-full w-full flex flex-col items-center justify-between py-16 px-8 text-center overflow-hidden">
       {/* Full-Bleed Background */}
@@ -24,12 +27,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onOpen }) => {
       <div className="relative z-10 flex flex-col items-center justify-between h-full w-full">
         {/* Header Text */}
         <div className="pt-12">
-          <p className="text-white uppercase tracking-[0.3em] text-[11px] font-bold mb-10 opacity-90">Together with their families</p>
+          <p className="text-white uppercase tracking-[0.3em] text-[11px] font-bold mb-10 opacity-90">{welcomeCopy.welcomeText}</p>
 
           <div className="flex flex-col items-center mt-4">
-            <h1 className="script-font text-white text-[5.5rem] leading-[0.8] drop-shadow-lg">{data.couple.fullNames.partner1}</h1>
+            <h1 className="script-font text-white text-[5.5rem] leading-[0.8] drop-shadow-lg">{welcomeCopy.brideDisplayName}</h1>
             <span className="script-font text-white text-3xl my-4 italic opacity-80">&</span>
-            <h1 className="script-font text-white text-[5.5rem] leading-[0.8] drop-shadow-lg">{data.couple.fullNames.partner2}</h1>
+            <h1 className="script-font text-white text-[5.5rem] leading-[0.8] drop-shadow-lg">{welcomeCopy.groomDisplayName}</h1>
           </div>
         </div>
 
@@ -37,12 +40,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onOpen }) => {
         <div className="w-full space-y-8 flex flex-col items-center">
           <div className="w-full max-w-[320px]">
             <div className="border-t border-b border-white/40 py-3 mb-6">
-              <p className="text-white font-medium tracking-[0.15em] text-sm uppercase">{data.wedding.dateString}</p>
+              <p className="text-white font-medium tracking-[0.15em] text-sm uppercase">{welcomeCopy.eventDate}</p>
             </div>
 
             <div className="space-y-1">
-              <p className="text-white text-lg font-bold tracking-widest uppercase">{data.wedding.venue.name}</p>
-              <p className="text-white/80 text-xs uppercase tracking-widest font-medium">{data.wedding.venue.location}</p>
+              <p className="text-white text-lg font-bold tracking-widest uppercase">{welcomeCopy.weddingVenue}</p>
+              <p className="text-white/80 text-xs uppercase tracking-widest font-medium">{welcomeCopy.weddingAddress}</p>
             </div>
           </div>
 
@@ -59,7 +62,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onOpen }) => {
             {/* Bottom Decoration */}
             <div className="flex justify-center items-center space-x-4">
               <div className="h-[0.5px] w-12 bg-white/40"></div>
-              <p className="text-white/80 text-[10px] uppercase tracking-[0.3em] font-bold whitespace-nowrap">Formal Attire</p>
+              <p className="text-white/80 text-[10px] uppercase tracking-[0.3em] font-bold whitespace-nowrap">{welcomeCopy.invitationLabel}</p>
               <div className="h-[0.5px] w-12 bg-white/40"></div>
             </div>
           </div>

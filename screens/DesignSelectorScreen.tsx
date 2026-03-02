@@ -104,14 +104,26 @@ const DesignSelectorScreen: React.FC<DesignSelectorScreenProps> = ({ onConfirm }
         <div className="relative h-full w-full flex flex-col bg-[#fdfbf7] dark:bg-slate-900 overflow-hidden">
             {/* Header */}
             <div className="flex-shrink-0 bg-white dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 px-4 pt-10 pb-4 shadow-sm">
-                <div className="flex items-center gap-3">
-                    <span className="material-icons text-yellow-500 text-3xl">auto_awesome</span>
-                    <div>
-                        <h1 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white leading-tight">Choose Your Design</h1>
-                        <p className="text-[11px] md:text-sm text-slate-400 dark:text-slate-400">
-                            Select one style for each section of your invitation
-                        </p>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <span className="material-icons text-yellow-500 text-3xl">auto_awesome</span>
+                        <div>
+                            <h1 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white leading-tight">Choose Your Design</h1>
+                            <p className="text-[11px] md:text-sm text-slate-400 dark:text-slate-400">
+                                Select style for your invitation
+                            </p>
+                        </div>
                     </div>
+                    {/* Admin Dashboard Quick Link */}
+                    <a
+                        href="http://localhost:3001"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-indigo-800"
+                    >
+                        <span className="material-icons text-sm">dashboard</span>
+                        Data Admin
+                    </a>
                 </div>
 
                 {/* Progress indicator */}
@@ -143,7 +155,7 @@ const DesignSelectorScreen: React.FC<DesignSelectorScreenProps> = ({ onConfirm }
 
                     {/* Text Design Category (IDs 1-7) */}
                     <div className="mb-4">
-                        <p className="px-4 text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Text Design</p>
+                        <p className="px-4 text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Welcomevarianttext</p>
                         <div className="flex gap-3 overflow-x-auto pb-3 px-4 scrollbar-hide snap-x snap-mandatory">
                             {(designsData.welcome as DesignVariant[]).filter(v => v.id <= 7).map(variant => (
                                 <div key={variant.id} className="snap-start">
@@ -160,7 +172,7 @@ const DesignSelectorScreen: React.FC<DesignSelectorScreenProps> = ({ onConfirm }
 
                     {/* Image Design Category (IDs 8-15) */}
                     <div>
-                        <p className="px-4 text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Image Design</p>
+                        <p className="px-4 text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-2">Welcomevariantimage</p>
                         <div className="flex gap-3 overflow-x-auto pb-3 px-4 scrollbar-hide snap-x snap-mandatory">
                             {(designsData.welcome as DesignVariant[]).filter(v => v.id >= 8).map(variant => (
                                 <div key={variant.id} className="snap-start">
@@ -185,7 +197,7 @@ const DesignSelectorScreen: React.FC<DesignSelectorScreenProps> = ({ onConfirm }
                     variants={designsData.loading as DesignVariant[]}
                 />
                 <div className="h-px bg-slate-100 dark:bg-slate-700 mx-4" />
-                {/* Main Page - Split Categories */}
+                {/* Dashboard - Split Categories */}
                 <div className="w-full">
                     <div className="flex items-center gap-3 mb-3 px-4">
                         <div className="w-7 h-7 rounded-full bg-yellow-400/20 flex items-center justify-center flex-shrink-0">
@@ -193,7 +205,7 @@ const DesignSelectorScreen: React.FC<DesignSelectorScreenProps> = ({ onConfirm }
                         </div>
                         <div className="flex-1">
                             <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-widest font-bold">Step 3</p>
-                            <h2 className="text-sm md:text-base font-bold text-slate-800 dark:text-white leading-tight">Main Page</h2>
+                            <h2 className="text-sm md:text-base font-bold text-slate-800 dark:text-white leading-tight">Dashboard</h2>
                         </div>
                     </div>
 

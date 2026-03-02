@@ -1,16 +1,19 @@
 
 import React from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy, splitDisplayName } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
     showImage?: boolean;
 }
 
-const WelcomeVariant10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+const Welcomevariantimage10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+    const welcomeCopy = getWelcomeCopy();
+
     // Split names for stacked layout
-    const [p1First, p1Middle] = data.couple.fullNames.partner1.split(' ');
-    const [p2First, p2Middle] = data.couple.fullNames.partner2.split(' ');
+    const [p1First, p1Middle] = splitDisplayName(welcomeCopy.brideDisplayName);
+    const [p2First, p2Middle] = splitDisplayName(welcomeCopy.groomDisplayName);
 
     return (
         <div className="relative h-full w-full bg-[#2F4F4F] flex flex-col items-center justify-between py-10 px-6 overflow-hidden">
@@ -36,17 +39,21 @@ const WelcomeVariant10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
 
                 <div>
                     <p className="uppercase tracking-[0.3em] text-[10px] font-sans text-[#C5A059] opacity-90 mb-10">
-                        Together with their families
+                        {welcomeCopy.welcomeText}
                     </p>
 
                     <div className="flex flex-col items-center leading-[0.85]">
                         <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md">{p1First}</h1>
-                        <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md pl-12">{p1Middle}</h1>
+                        {p1Middle && (
+                            <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md pl-12">{p1Middle}</h1>
+                        )}
 
                         <span className="font-script text-4xl text-[#C5A059] my-6">&</span>
 
                         <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md">{p2First}</h1>
-                        <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md pl-12">{p2Middle}</h1>
+                        {p2Middle && (
+                            <h1 className="font-script text-7xl md:text-8xl text-white drop-shadow-md pl-12">{p2Middle}</h1>
+                        )}
                     </div>
                 </div>
 
@@ -55,16 +62,16 @@ const WelcomeVariant10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
                     {/* Date Block */}
                     <div className="border-t border-b border-[#C5A059]/30 py-4 w-full max-w-[280px]">
                         <p className="uppercase tracking-[0.25em] text-sm font-serif text-white/90">
-                            {data.wedding.dateString}
+                            {welcomeCopy.eventDate}
                         </p>
                     </div>
 
                     <div className="space-y-2">
                         <h2 className="text-2xl font-serif uppercase tracking-widest text-[#F0E6D2]">
-                            {data.wedding.venue.name}
+                            {welcomeCopy.weddingVenue}
                         </h2>
                         <p className="text-[10px] uppercase tracking-[0.25em] text-[#C5A059] font-sans">
-                            {data.wedding.venue.location}
+                            {welcomeCopy.weddingAddress}
                         </p>
                     </div>
 
@@ -79,7 +86,7 @@ const WelcomeVariant10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
 
                     <div className="flex items-center gap-4 opacity-50 mt-2">
                         <div className="h-[0.5px] w-12 bg-[#C5A059]" />
-                        <span className="uppercase text-[9px] tracking-[0.25em] text-[#C5A059]">Formal Attire</span>
+                        <span className="uppercase text-[9px] tracking-[0.25em] text-[#C5A059]">{welcomeCopy.invitationLabel}</span>
                         <div className="h-[0.5px] w-12 bg-[#C5A059]" />
                     </div>
                 </div>
@@ -88,4 +95,4 @@ const WelcomeVariant10: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
     );
 };
 
-export default WelcomeVariant10;
+export default Welcomevariantimage10;

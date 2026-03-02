@@ -1,13 +1,16 @@
 
 import React from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
     showImage?: boolean;
 }
 
-const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+const Welcomevariantimage13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+    const welcomeCopy = getWelcomeCopy();
+
     // Split names for stacked layout if needed, but image shows full names stacked
     // "SARAH EMILY"
     // "&"
@@ -30,12 +33,12 @@ const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
             {/* Top Content */}
             <div className="relative z-10 w-full flex flex-col items-center pt-8">
                 <p className="uppercase tracking-[0.25em] text-[10px] font-bold text-white mb-6 drop-shadow-md">
-                    Together with their families
+                    {welcomeCopy.welcomeText}
                 </p>
 
                 <div className="flex flex-col items-center">
                     <h1 className="font-display font-extrabold text-6xl md:text-8xl text-white uppercase leading-[0.9] text-center drop-shadow-xl tracking-tight">
-                        {data.couple.fullNames.partner1}
+                        {welcomeCopy.brideDisplayName}
                     </h1>
 
                     <div className="flex items-center gap-4 my-2 opacity-90">
@@ -45,7 +48,7 @@ const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
                     </div>
 
                     <h1 className="font-display font-extrabold text-6xl md:text-8xl text-white uppercase leading-[0.9] text-center drop-shadow-xl tracking-tight">
-                        {data.couple.fullNames.partner2}
+                        {welcomeCopy.groomDisplayName}
                     </h1>
                 </div>
             </div>
@@ -56,15 +59,15 @@ const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
                 {/* Date & Venue */}
                 <div className="text-center space-y-6">
                     <p className="uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-lg">
-                        {data.wedding.dateString}
+                        {welcomeCopy.eventDate}
                     </p>
 
                     <div className="space-y-1">
                         <h2 className="text-2xl font-display font-bold text-white uppercase tracking-wider drop-shadow-lg">
-                            {data.wedding.venue.name}
+                            {welcomeCopy.weddingVenue}
                         </h2>
                         <p className="text-[10px] uppercase tracking-[0.25em] text-white/90 font-medium">
-                            {data.wedding.venue.location}
+                            {welcomeCopy.weddingAddress}
                         </p>
                     </div>
                 </div>
@@ -82,7 +85,7 @@ const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
                 <div className="flex items-center gap-4 opacity-70">
                     <div className="h-[1px] w-8 bg-white" />
                     <p className="uppercase tracking-[0.25em] text-[9px] font-bold text-white">
-                        Formal Attire
+                        {welcomeCopy.invitationLabel}
                     </p>
                     <div className="h-[1px] w-8 bg-white" />
                 </div>
@@ -93,4 +96,4 @@ const WelcomeVariant13: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
     );
 };
 
-export default WelcomeVariant13;
+export default Welcomevariantimage13;

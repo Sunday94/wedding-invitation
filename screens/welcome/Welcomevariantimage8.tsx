@@ -1,16 +1,19 @@
 
 import React from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy, splitDisplayName } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
     showImage?: boolean; // New prop
 }
 
-const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+const Welcomevariantimage8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+    const welcomeCopy = getWelcomeCopy();
+
     // Split names for stacked layout
-    const [p1First, p1Middle] = data.couple.fullNames.partner1.split(' ');
-    const [p2First, p2Middle] = data.couple.fullNames.partner2.split(' ');
+    const [p1First, p1Middle] = splitDisplayName(welcomeCopy.brideDisplayName);
+    const [p2First, p2Middle] = splitDisplayName(welcomeCopy.groomDisplayName);
 
     return (
         <div className={`relative h-full w-full overflow-hidden flex flex-col items-center justify-between py-12 px-6 ${!showImage ? 'bg-[#1e3a5f]' : ''}`}>
@@ -31,18 +34,22 @@ const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = tr
 
                 {/* Header */}
                 <p className="uppercase tracking-[0.25em] text-[10px] font-sans font-medium text-white/90 drop-shadow-md">
-                    Together with their families
+                    {welcomeCopy.welcomeText}
                 </p>
 
                 {/* Names - Stacked */}
                 <div className="flex flex-col items-center leading-[0.85]">
                     <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl">{p1First}</h1>
-                    <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl pl-12">{p1Middle}</h1>
+                    {p1Middle && (
+                        <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl pl-12">{p1Middle}</h1>
+                    )}
 
                     <span className="font-script text-4xl text-white/90 my-2">&</span>
 
                     <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl">{p2First}</h1>
-                    <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl pl-12">{p2Middle}</h1>
+                    {p2Middle && (
+                        <h1 className="font-script text-[5.5rem] md:text-8xl text-white drop-shadow-xl pl-12">{p2Middle}</h1>
+                    )}
                 </div>
 
                 {/* Info Block */}
@@ -52,7 +59,7 @@ const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = tr
                     <div className="w-full flex items-center justify-center gap-4">
                         <div className="h-[1px] w-16 md:w-24 bg-white/60" />
                         <p className="uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-md">
-                            {data.wedding.dateString}
+                            {welcomeCopy.eventDate}
                         </p>
                         <div className="h-[1px] w-16 md:w-24 bg-white/60" />
                     </div>
@@ -60,10 +67,10 @@ const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = tr
                     {/* Venue */}
                     <div className="text-center space-y-1">
                         <h2 className="text-2xl font-serif text-white uppercase tracking-widest drop-shadow-md">
-                            {data.wedding.venue.name}
+                            {welcomeCopy.weddingVenue}
                         </h2>
                         <p className="text-[10px] uppercase tracking-[0.2em] text-white/90 font-sans shadow-black/50">
-                            {data.wedding.venue.location}
+                            {welcomeCopy.weddingAddress}
                         </p>
                     </div>
 
@@ -79,7 +86,7 @@ const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = tr
                     {/* Footer - Formal Attire */}
                     <div className="flex items-center gap-4 opacity-80 mt-2">
                         <div className="h-[0.5px] w-12 bg-white" />
-                        <span className="uppercase text-[9px] tracking-[0.25em] text-white font-semibold">Formal Attire</span>
+                        <span className="uppercase text-[9px] tracking-[0.25em] text-white font-semibold">{welcomeCopy.invitationLabel}</span>
                         <div className="h-[0.5px] w-12 bg-white" />
                     </div>
                 </div>
@@ -90,4 +97,4 @@ const WelcomeVariant8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = tr
     );
 };
 
-export default WelcomeVariant8;
+export default Welcomevariantimage8;

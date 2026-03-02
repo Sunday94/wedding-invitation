@@ -186,99 +186,99 @@
     "dashboard": [
         {
             "id": 1,
-            "label": "Classic Cards",
+            "label": "Luxe Gold",
             "accent": "#c8a96e",
-            "description": "Warm ivory cards with gold borders"
+            "description": "Elegant cream cards with gold accents"
         },
         {
             "id": 2,
-            "label": "Magazine Layout",
+            "label": "Classic Charcoal",
             "accent": "#3a3a3a",
-            "description": "Editorial grid with bold section headers"
+            "description": "Minimalist light grey with charcoal design"
         },
         {
             "id": 3,
-            "label": "Botanical",
+            "label": "Sage Garden",
             "accent": "#7d9b76",
-            "description": "Green-accented cards with leaf motifs"
+            "description": "Nature-inspired palette with sage accents"
         },
         {
             "id": 4,
-            "label": "Luxe Dark",
-            "accent": "#1a1a2e",
-            "description": "Dark background with gold-trimmed cards"
+            "label": "Midnight Glamour",
+            "accent": "#c8a96e",
+            "description": "Dark mode with glowing gold highlights"
         },
         {
             "id": 5,
-            "label": "Blush Romance",
+            "label": "Rose Romance",
             "accent": "#e8a0a0",
-            "description": "Soft pink palette, rounded card corners"
+            "description": "Soft pink tones with rose accents"
         },
         {
             "id": 6,
-            "label": "Minimal White",
-            "accent": "#f5f5f5",
-            "description": "Ultra-clean white with thin dividers"
+            "label": "Modern Minimalist",
+            "accent": "#cccccc",
+            "description": "Ultra-clean white-on-white design"
         },
         {
             "id": 7,
-            "label": "Navy & Ivory",
+            "label": "Nautical Navy",
             "accent": "#1e3a5f",
-            "description": "Navy header bars with ivory content areas"
+            "description": "Formal maritime theme with navy accents"
         },
         {
             "id": 8,
-            "label": "Terracotta Boho",
+            "label": "Terracotta Earth",
             "accent": "#b5533c",
-            "description": "Earthy warm palette with organic shapes"
+            "description": "Warm, rustic theme with clay accents"
         },
         {
             "id": 9,
-            "label": "Lavender Dream",
+            "label": "Lavender Mist",
             "accent": "#9b88b4",
-            "description": "Soft purple with script headings"
+            "description": "Dreamy purple with violet highlights"
         },
         {
             "id": 10,
-            "label": "Golden Gala",
+            "label": "Autumn Glow",
             "accent": "#d4813a",
-            "description": "Warm golden amber, festive and rich"
+            "description": "Warm amber with golden sunset accents"
         },
         {
             "id": 11,
-            "label": "Dusty Blue",
+            "label": "Ocean Breeze",
             "accent": "#7ba7bc",
-            "description": "Calm blue tones with serif typography"
+            "description": "Cool sky-blue with steel-blue accents"
         },
         {
             "id": 12,
-            "label": "Forest Retreat",
+            "label": "Emerald Velvet",
             "accent": "#2d6a4f",
-            "description": "Deep green with earthy natural tones"
+            "description": "Rich forest theme with emerald accents"
         },
         {
             "id": 13,
-            "label": "Pearl Shimmer",
+            "label": "Slate Sophistication",
             "accent": "#b0bec5",
-            "description": "Cool silver with a soft glossy finish"
+            "description": "Cool-grey theme with slate-blue accents"
         },
         {
             "id": 14,
-            "label": "Champagne Fizz",
-            "accent": "#e8d5a3",
-            "description": "Light and airy champagne palette"
+            "label": "Radiant Gold",
+            "accent": "#c8a022",
+            "description": "Vibrant gold theme with amber details"
         },
         {
             "id": 15,
-            "label": "Midnight Black",
-            "accent": "#0d0d0d",
-            "description": "Pure black with stark white text"
+            "label": "Absolute Noir",
+            "accent": "#ffffff",
+            "description": "True dark mode with crisp white text"
         },
         {
             "id": 16,
-            "label": "Modern Layout",
+            "label": "Luxe Gold (Full-Width)",
             "accent": "#c8a96e",
-            "description": "A fresh take on the dashboard with a modern layout"
+            "description": "Original Luxe Gold palette with wider layout"
         }
     ]
 }

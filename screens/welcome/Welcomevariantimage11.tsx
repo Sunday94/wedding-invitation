@@ -1,13 +1,16 @@
 
 import React from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
     showImage?: boolean;
 }
 
-const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+const Welcomevariantimage11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
+    const welcomeCopy = getWelcomeCopy();
+
     return (
         <div className={`relative h-full w-full overflow-hidden flex flex-col items-center justify-between py-12 px-6 ${!showImage ? 'bg-[#f4efe9]' : ''}`}>
             {/* Background Image (Faded/Light) */}
@@ -29,17 +32,17 @@ const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
 
                 {/* Header */}
                 <p className="uppercase tracking-[0.25em] text-[10px] font-sans font-bold text-[#5c6851]">
-                    Together with their families
+                    {welcomeCopy.welcomeText}
                 </p>
 
                 {/* Names (Rust/Terracotta) */}
                 <div className="flex flex-col items-center gap-0">
                     <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none">
-                        {data.couple.fullNames.partner1}
+                        {welcomeCopy.brideDisplayName}
                     </h1>
                     <span className="font-script text-4xl text-[#8FBC8F] -my-2">&</span>
                     <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none">
-                        {data.couple.fullNames.partner2}
+                        {welcomeCopy.groomDisplayName}
                     </h1>
                 </div>
 
@@ -50,7 +53,7 @@ const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
                         <div className="h-[1px] w-12 bg-[#C17C5F]/40" />
                         <div className="text-center">
                             <p className="font-serif italic text-2xl text-[#2c3e50]">
-                                {data.wedding.dateString}
+                                {welcomeCopy.eventDate}
                             </p>
                         </div>
                         <div className="h-[1px] w-12 bg-[#C17C5F]/40" />
@@ -58,10 +61,10 @@ const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
 
                     <div className="text-center space-y-1">
                         <h2 className="text-2xl font-serif font-bold uppercase tracking-widest text-[#2c3e50]">
-                            {data.wedding.venue.name}
+                            {welcomeCopy.weddingVenue}
                         </h2>
                         <p className="text-[10px] uppercase tracking-[0.3em] text-[#7d9b76] font-bold">
-                            {data.wedding.venue.location}
+                            {welcomeCopy.weddingAddress}
                         </p>
                     </div>
 
@@ -76,7 +79,7 @@ const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
 
                     <div className="flex items-center gap-4 opacity-60">
                         <div className="h-[0.5px] w-16 bg-[#555]" />
-                        <span className="uppercase text-[9px] tracking-[0.25em] text-[#555] font-bold">Formal Attire</span>
+                        <span className="uppercase text-[9px] tracking-[0.25em] text-[#555] font-bold">{welcomeCopy.invitationLabel}</span>
                         <div className="h-[0.5px] w-16 bg-[#555]" />
                     </div>
                 </div>
@@ -85,4 +88,4 @@ const WelcomeVariant11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = t
     );
 };
 
-export default WelcomeVariant11;
+export default Welcomevariantimage11;

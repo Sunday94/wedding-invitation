@@ -1,12 +1,15 @@
 
 import React from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
 }
 
-const WelcomeVariant6: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
+const Welcomevarianttext6: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
+    const welcomeCopy = getWelcomeCopy();
+
     return (
         <div className="relative h-full w-full bg-[#fcf8f0] p-6 flex flex-col justify-between overflow-hidden">
             {/* Top Left Leaf */}
@@ -30,7 +33,7 @@ const WelcomeVariant6: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
                 {/* Top Tagline */}
                 <div className="flex flex-col items-center mb-8 space-y-4">
                     <p className="uppercase tracking-[0.25em] text-[10px] text-gray-400 font-sans font-medium">
-                        Invitation
+                        {welcomeCopy.welcomeText}
                     </p>
                     <div className="flex items-center w-full max-w-[200px] gap-4">
                         <div className="h-[1px] flex-1 bg-[#d4af37]/30"></div>
@@ -42,28 +45,28 @@ const WelcomeVariant6: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
                 {/* Names */}
                 <div className="flex flex-col items-center my-6 space-y-4">
                     <h1 className="font-script text-6xl md:text-7xl text-[#333] drop-shadow-sm leading-tight">
-                        {data.couple.fullNames.partner1}
+                        {welcomeCopy.brideDisplayName}
                     </h1>
                     <span className="font-serif italic text-3xl text-[#d4af37]">&</span>
                     <h1 className="font-script text-6xl md:text-7xl text-[#333] drop-shadow-sm leading-tight">
-                        {data.couple.fullNames.partner2}
+                        {welcomeCopy.groomDisplayName}
                     </h1>
                 </div>
 
                 {/* Center Date */}
                 <div className="flex flex-col items-center space-y-2 mb-10">
                     <p className="font-serif uppercase tracking-[0.1em] text-lg text-gray-700 font-medium border-b border-[#d4af37]/20 pb-1">
-                        {data.wedding.dateString}
+                        {welcomeCopy.eventDate}
                     </p>
                 </div>
 
                 {/* Venue */}
                 <div className="space-y-1 mb-12">
                     <p className="font-serif uppercase tracking-[0.1em] text-2xl text-gray-800 font-bold">
-                        {data.wedding.venue.name}
+                        {welcomeCopy.weddingVenue}
                     </p>
                     <p className="font-sans uppercase tracking-[0.2em] text-[10px] text-gray-400">
-                        {data.wedding.venue.location}
+                        {welcomeCopy.weddingAddress}
                     </p>
                 </div>
 
@@ -83,4 +86,4 @@ const WelcomeVariant6: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
     );
 };
 
-export default WelcomeVariant6;
+export default Welcomevarianttext6;

@@ -12,13 +12,14 @@ interface WishlistPopupProps {
     cardBorder: string;
 }
 
-const CATEGORIES = ["All", "Kitchen Appliances", "Home Appliances", "Gift Money", "Bedding & Linen"];
+const CATEGORIES = ["All", "Kitchen Appliances", "Home Appliances", "Gift Money", "Bedding & Linen", "Others"];
 
 const TAG_COLORS: Record<string, string> = {
     "Kitchen Appliances": "#f39c12",
     "Gift Money": "#1abc9c",
     "Bedding & Linen": "#ff7675",
-    "Home Appliances": "#3498db"
+    "Home Appliances": "#3498db",
+    "Others": "#95a5a6"
 };
 
 const WishlistPopup: React.FC<WishlistPopupProps> = ({ isOpen, onClose, accentColor, textPrimary, textSecondary, cardBg, cardBorder }) => {
@@ -63,7 +64,8 @@ const WishlistPopup: React.FC<WishlistPopupProps> = ({ isOpen, onClose, accentCo
                                     "Kitchen Appliances": "coffee_maker",
                                     "Home Appliances": "home",
                                     "Gift Money": "savings",
-                                    "Bedding & Linen": "bed"
+                                    "Bedding & Linen": "bed",
+                                    "Others": "inventory_2"
                                 };
                                 const isActive = activeCategory === cat;
                                 return (

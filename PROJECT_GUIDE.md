@@ -100,7 +100,7 @@ The bride and groom will see a **Design Selector screen** when they first open t
 
 1. **Welcome Screen** — 15 variants
 2. **Loading Screen** — 15 variants  
-3. **Main Page (Dashboard)** — 15 variants
+3. **Dashboard** — 15 variants
 
 Only after selecting all 3 variants does the confirmation button activate. Pressing it saves the selection to `localStorage` and launches the invitation with the chosen designs.
 
@@ -194,7 +194,7 @@ const ActiveWelcome = WelcomeVariants[selection.welcome - 1];
 | Feb 16 | Fixed timeline update bug (D1 API) |
 | Feb 19 | Added countdown timer with date picker |
 | Feb 19 | Updated dashboard with guest stats, timeline preview, banquet, gift cards |
-| Feb 19 | Design page sections: "Choose Front Page / Loading / Main Page Design" (options 1–10) |
+| Feb 19 | Design page sections: "Choose Front Page / Loading / Dashboard Design" (options 1–10) |
 | Feb 19 | Switched to JSONC format for dummy data |
 | **Feb 19** | **🔴 Planned: Full Design Selector System (this guide)** |
 
