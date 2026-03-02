@@ -3,6 +3,9 @@ export interface RemoteDesignSettings {
     loading_design_id?: string | null;
     dashboard_design_id?: string | null;
     welcome_text?: string | null;
+    bride_groom_font?: string | null;
+    loading_font?: string | null;
+    body_font?: string | null;
 }
 
 export interface SyncedDesignSelection {

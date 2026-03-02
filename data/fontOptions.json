@@ -1,0 +1,35 @@
+{
+    "brideGroom": {
+        "defaultId": "pinyon-script",
+        "options": [
+            { "id": "pinyon-script", "family": "Pinyon Script", "fallback": "cursive", "googleFamily": "Pinyon+Script" },
+            { "id": "great-vibes", "family": "Great Vibes", "fallback": "cursive", "googleFamily": "Great+Vibes" },
+            { "id": "allura", "family": "Allura", "fallback": "cursive", "googleFamily": "Allura" },
+            { "id": "parisienne", "family": "Parisienne", "fallback": "cursive", "googleFamily": "Parisienne" },
+            { "id": "alex-brush", "family": "Alex Brush", "fallback": "cursive", "googleFamily": "Alex+Brush" },
+            { "id": "tangerine", "family": "Tangerine", "fallback": "cursive", "googleFamily": "Tangerine:wght@400;700" }
+        ]
+    },
+    "loading": {
+        "defaultId": "playfair-display",
+        "options": [
+            { "id": "playfair-display", "family": "Playfair Display", "fallback": "serif", "googleFamily": "Playfair+Display:ital,wght@0,400;0,700;1,400" },
+            { "id": "cormorant-garamond", "family": "Cormorant Garamond", "fallback": "serif", "googleFamily": "Cormorant+Garamond:wght@400;500;600;700" },
+            { "id": "lora", "family": "Lora", "fallback": "serif", "googleFamily": "Lora:wght@400;500;600;700" },
+            { "id": "crimson-text", "family": "Crimson Text", "fallback": "serif", "googleFamily": "Crimson+Text:ital,wght@0,400;0,600;1,400" },
+            { "id": "libre-baskerville", "family": "Libre Baskerville", "fallback": "serif", "googleFamily": "Libre+Baskerville:wght@400;700" },
+            { "id": "alegreya", "family": "Alegreya", "fallback": "serif", "googleFamily": "Alegreya:ital,wght@0,400;0,600;1,400" }
+        ]
+    },
+    "body": {
+        "defaultId": "plus-jakarta-sans",
+        "options": [
+            { "id": "plus-jakarta-sans", "family": "Plus Jakarta Sans", "fallback": "sans-serif", "googleFamily": "Plus+Jakarta+Sans:wght@300;400;500;600;700" },
+            { "id": "inter", "family": "Inter", "fallback": "sans-serif", "googleFamily": "Inter:wght@300;400;500;600;700" },
+            { "id": "roboto", "family": "Roboto", "fallback": "sans-serif", "googleFamily": "Roboto:wght@300;400;500;700" },
+            { "id": "arimo", "family": "Arimo", "fallback": "sans-serif", "googleFamily": "Arimo:wght@400;500;600;700" },
+            { "id": "public-sans", "family": "Public Sans", "fallback": "sans-serif", "googleFamily": "Public+Sans:wght@300;400;500;600;700" },
+            { "id": "ibm-plex-sans", "family": "IBM Plex Sans", "fallback": "sans-serif", "googleFamily": "IBM+Plex+Sans:wght@300;400;500;600;700" }
+        ]
+    }
+}

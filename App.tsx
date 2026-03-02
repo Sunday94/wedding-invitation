@@ -6,6 +6,7 @@ import LoadingVariant from './screens/LoadingVariant';
 import DashboardVariant from './screens/DashboardVariant';
 import { buildApiUrl, FRONTEND_CLIENT_ID } from './services/apiConfig';
 import { mapRemoteDesignToSelection, RemoteDesignSettings, SyncedDesignSelection } from './services/designSync';
+import { applyRemoteFontSettings, resetFontSettings } from './services/fontSettings';
 import { setWelcomeCopySource } from './screens/welcome/welcomeTextBindings';
 
 export type ScreenState = 'selector' | 'welcome' | 'loading' | 'dashboard';
@@ -119,6 +120,7 @@ const InnerApp: React.FC = () => {
 
     const syncDesignFromBackend = async () => {
       setWelcomeCopySource(null);
+      resetFontSettings();
 
       try {
         const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult] = await Promise.allSettled([
@@ -131,6 +133,7 @@ const InnerApp: React.FC = () => {
         const remoteDesign = remoteDesignResult.status === 'fulfilled' ? remoteDesignResult.value : null;
         const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
         const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
+        applyRemoteFontSettings(remoteDesign);
 
         setWelcomeCopySource({
           welcome_text: remoteDesign?.welcome_text ?? null,
@@ -214,7 +217,9 @@ const InnerApp: React.FC = () => {
         )}
 
         {currentScreen === 'loading' && (
-          <LoadingVariant onFinished={handleLoadingFinished} variantId={activeVariants.loading} />
+          <div className="loading-font-scope h-full w-full">
+            <LoadingVariant onFinished={handleLoadingFinished} variantId={activeVariants.loading} />
+          </div>
         )}
 
         {currentScreen === 'dashboard' && (

@@ -35,9 +35,26 @@
         }
     </script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .script-font { font-family: 'Pinyon Script', cursive; }
-        .serif-font { font-family: 'Playfair Display', serif; }
+        :root {
+            --wedding-font-bride-groom: 'Pinyon Script';
+            --wedding-font-loading: 'Playfair Display';
+            --wedding-font-body: 'Plus Jakarta Sans';
+        }
+        body,
+        .font-sans,
+        .font-display {
+            font-family: var(--wedding-font-body), sans-serif;
+        }
+        .font-script,
+        .script-font {
+            font-family: var(--wedding-font-bride-groom), cursive !important;
+        }
+        .serif-font {
+            font-family: var(--wedding-font-loading), serif;
+        }
+        .loading-font-scope *:not(.material-icons):not(.material-icons-outlined) {
+            font-family: var(--wedding-font-loading), serif !important;
+        }
         
         @keyframes subtle-pulse {
             0%, 100% { transform: scale(1); opacity: 0.8; }
