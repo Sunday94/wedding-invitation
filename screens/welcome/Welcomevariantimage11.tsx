@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { data } from '../../data';
-import { getWelcomeCopy } from './welcomeTextBindings';
+import { getWelcomeCopy, splitDisplayName } from './welcomeTextBindings';
 
 interface WelcomeVariantProps {
     onOpen: () => void;
@@ -10,6 +10,8 @@ interface WelcomeVariantProps {
 
 const Welcomevariantimage11: React.FC<WelcomeVariantProps> = ({ onOpen, showImage = true }) => {
     const welcomeCopy = getWelcomeCopy();
+    const [brideFirst, brideRest] = splitDisplayName(welcomeCopy.brideDisplayName);
+    const [groomFirst, groomRest] = splitDisplayName(welcomeCopy.groomDisplayName);
 
     return (
         <div className={`relative h-full w-full overflow-hidden flex flex-col items-center justify-between py-12 px-6 ${!showImage ? 'bg-[#f4efe9]' : ''}`}>
@@ -38,12 +40,22 @@ const Welcomevariantimage11: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
                 {/* Names (Rust/Terracotta) */}
                 <div className="w-full flex flex-col items-start gap-0 pl-2 md:pl-6">
                     <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
-                        {welcomeCopy.brideDisplayName}
+                        {brideFirst}
                     </h1>
+                    {brideRest && (
+                        <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
+                            {brideRest}
+                        </h1>
+                    )}
                     <span className="font-script text-4xl text-[#8FBC8F] -my-2 ml-6">&</span>
                     <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
-                        {welcomeCopy.groomDisplayName}
+                        {groomFirst}
                     </h1>
+                    {groomRest && (
+                        <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
+                            {groomRest}
+                        </h1>
+                    )}
                 </div>
 
                 {/* Info Block - Dark Text for contrast against light field */}
