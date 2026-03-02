@@ -36,12 +36,12 @@ const Welcomevariantimage11: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
                 </p>
 
                 {/* Names (Rust/Terracotta) */}
-                <div className="flex flex-col items-center gap-0">
-                    <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none">
+                <div className="w-full flex flex-col items-start gap-0 pl-2 md:pl-6">
+                    <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
                         {welcomeCopy.brideDisplayName}
                     </h1>
-                    <span className="font-script text-4xl text-[#8FBC8F] -my-2">&</span>
-                    <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none">
+                    <span className="font-script text-4xl text-[#8FBC8F] -my-2 ml-6">&</span>
+                    <h1 className="font-script text-[5rem] md:text-[6rem] text-[#C17C5F] drop-shadow-sm leading-none text-left">
                         {welcomeCopy.groomDisplayName}
                     </h1>
                 </div>
