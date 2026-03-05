@@ -6,6 +6,7 @@ interface SourceMap {
 
 interface RuntimeWelcomeSource {
     welcome_text?: string | null;
+    loading_text?: string | null;
     bride_display_name?: string | null;
     groom_display_name?: string | null;
     event_date?: string | null;
@@ -15,6 +16,7 @@ interface RuntimeWelcomeSource {
 
 export interface WelcomeCopy {
     welcomeText: string;
+    loadingText: string;
     brideDisplayName: string;
     groomDisplayName: string;
     eventDate: string;
@@ -72,6 +74,10 @@ export const getWelcomeCopy = (): WelcomeCopy => {
         welcomeText: pickString(
             runtimeWelcomeSource.welcome_text,
             pickString(source.welcome_text, 'Together with their families')
+        ),
+        loadingText: pickString(
+            runtimeWelcomeSource.loading_text,
+            pickString(source.loading_text, 'Preparing our special day...')
         ),
         brideDisplayName: pickString(
             runtimeWelcomeSource.bride_display_name,

@@ -147,6 +147,7 @@ const InnerApp: React.FC = () => {
 
         setWelcomeCopySource({
           welcome_text: remoteDesign?.welcome_text ?? null,
+          loading_text: remoteDesign?.loading_text ?? null,
           bride_display_name: remoteDetails?.bride_display_name ?? null,
           groom_display_name: remoteDetails?.groom_display_name ?? null,
           event_date: remoteDetails?.event_date || remoteOverview?.event_date || null,

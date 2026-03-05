@@ -8,8 +8,12 @@ interface LoadingVariantProps {
 
 const LoadingVariant1: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
-    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
     const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
+    const loadingTextLines = loadingText
+        .split(/<br\s*\/?>|\n/gi)
+        .map((line) => line.trim())
+        .filter(Boolean);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -51,7 +55,14 @@ const LoadingVariant1: React.FC<LoadingVariantProps> = ({ onFinished }) => {
 
                 <div className="text-center space-y-3 z-10">
                     <h1 className="text-3xl italic leading-tight text-[#1c2e4a]">
-                        Preparing our special<br />day...
+                        {loadingTextLines.length > 1
+                            ? loadingTextLines.map((line, index) => (
+                                <React.Fragment key={`${line}-${index}`}>
+                                    {line}
+                                    {index < loadingTextLines.length - 1 ? <br /> : null}
+                                </React.Fragment>
+                            ))
+                            : loadingText}
                     </h1>
                     <p className="text-[10px] tracking-[0.25em] uppercase font-sans font-bold text-[#c8a96e] mt-4">
                         Please Wait
@@ -75,7 +86,7 @@ const LoadingVariant1: React.FC<LoadingVariantProps> = ({ onFinished }) => {
                     <div className="w-12 h-[1px] bg-[#c8a96e]/30 mx-auto" />
 
                     <p className="text-[10px] tracking-[0.2em] uppercase font-sans font-medium text-[#6b705c]">
-                        {data.wedding.dateString}
+                        {eventDate || data.wedding.dateString}
                     </p>
                 </div>
             </div>
