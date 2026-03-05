@@ -25,7 +25,7 @@ const Welcomevariantimage11: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
                     />
                     <div className="absolute inset-0 bg-white/10" />
                     {/* Gradient from bottom to ensure text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/70 to-transparent" />
                 </div>
             )}
 

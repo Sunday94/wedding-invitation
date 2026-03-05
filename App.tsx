@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DesignProvider, useDesign } from './context/DesignContext';
+import { data } from './data';
 import DesignSelectorScreen from './screens/DesignSelectorScreen';
 import WelcomeVariant from './screens/WelcomeVariant';
 import LoadingVariant from './screens/LoadingVariant';
@@ -25,6 +26,13 @@ type RemoteWelcomeDetails = {
 type RemoteOverview = {
   event_date?: string | null;
 } | null;
+const DEFAULT_WELCOME_IMAGE = data.wedding.welcomeImage;
+const normalizeFrontImageUrl = (value: unknown): string => {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed || trimmed === 'null' || trimmed === 'undefined') return '';
+  return trimmed;
+};
 
 const hasUrlOverrides = (): boolean => {
   const params = new URLSearchParams(window.location.search);
@@ -133,6 +141,8 @@ const InnerApp: React.FC = () => {
         const remoteDesign = remoteDesignResult.status === 'fulfilled' ? remoteDesignResult.value : null;
         const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
         const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
+        const remoteWelcomeImage = normalizeFrontImageUrl(remoteDesign?.front_image_url);
+        data.wedding.welcomeImage = remoteWelcomeImage || DEFAULT_WELCOME_IMAGE;
         applyRemoteFontSettings(remoteDesign);
 
         setWelcomeCopySource({
