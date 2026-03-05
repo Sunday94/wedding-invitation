@@ -61,7 +61,7 @@ const WelcomeVariant: React.FC<WelcomeVariantProps> = ({ onOpen, variantId, show
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center justify-between h-full w-full max-w-2xl mx-auto">
                 <div className="pt-12">
-                    <p className="text-white uppercase tracking-[0.3em] text-[11px] font-bold mb-10 opacity-90">
+                    <p className="font-sans text-white uppercase tracking-[0.3em] text-[11px] font-bold mb-10 opacity-90">
                         {welcomeCopy.welcomeText}
                     </p>
                     <div className="flex flex-col items-center mt-4">
@@ -78,12 +78,12 @@ const WelcomeVariant: React.FC<WelcomeVariantProps> = ({ onOpen, variantId, show
                 <div className="w-full space-y-8 flex flex-col items-center">
                     <div className="w-full max-w-[320px]">
                         <div className="border-t border-b border-white/40 py-3 mb-6">
-                            <p className="text-white font-medium tracking-[0.15em] text-sm uppercase">
+                            <p className="font-serif text-white font-medium tracking-[0.15em] text-sm uppercase">
                                 {welcomeCopy.eventDate}
                             </p>
                         </div>
                         <div className="space-y-1">
-                            <p className="text-white text-lg font-bold tracking-widest uppercase">{welcomeCopy.weddingVenue}</p>
+                            <p className="font-serif text-white text-lg font-bold tracking-widest uppercase">{welcomeCopy.weddingVenue}</p>
                             <p className="text-white/80 text-xs uppercase tracking-widest font-medium">{welcomeCopy.weddingAddress}</p>
                         </div>
                     </div>

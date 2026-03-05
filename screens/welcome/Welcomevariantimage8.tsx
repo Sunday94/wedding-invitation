@@ -58,7 +58,7 @@ const Welcomevariantimage8: React.FC<WelcomeVariantProps> = ({ onOpen, showImage
                     {/* Date Divider */}
                     <div className="w-full flex items-center justify-center gap-4">
                         <div className="h-[1px] w-16 md:w-24 bg-white/60" />
-                        <p className="uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-md">
+                        <p className="font-serif uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-md">
                             {welcomeCopy.eventDate}
                         </p>
                         <div className="h-[1px] w-16 md:w-24 bg-white/60" />

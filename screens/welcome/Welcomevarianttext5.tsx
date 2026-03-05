@@ -41,7 +41,7 @@ const Welcomevarianttext5: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
                 </div>
 
                 <div className="space-y-1">
-                    <p className="uppercase tracking-[0.15em] text-lg font-bold text-white shadow-sm">
+                    <p className="font-serif uppercase tracking-[0.15em] text-lg font-bold text-white shadow-sm">
                         {welcomeCopy.weddingVenue}
                     </p>
                     <p className="uppercase tracking-[0.2em] text-[10px] text-white/70 font-sans">

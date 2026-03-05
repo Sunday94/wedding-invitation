@@ -218,7 +218,10 @@ const InnerApp: React.FC = () => {
             />
             <button
               onClick={handleChangeDesign}
-              className="absolute top-4 right-4 z-50 bg-black/30 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full flex items-center gap-1 hover:bg-black/50 transition-colors"
+              disabled
+              aria-hidden="true"
+              tabIndex={-1}
+              className="hidden absolute top-4 right-4 z-50 bg-black/30 backdrop-blur-sm text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full flex items-center gap-1 hover:bg-black/50 transition-colors pointer-events-none opacity-0"
             >
               <span className="material-icons text-[12px]">palette</span>
               Change Design

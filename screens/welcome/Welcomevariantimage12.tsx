@@ -85,7 +85,7 @@ const Welcomevariantimage12: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
                 <div className="w-full flex flex-col items-center gap-8 mt-4">
 
                     <div className="space-y-2 w-full border-t border-b border-[#D4AF37]/20 py-5 max-w-xs">
-                        <p className="uppercase tracking-[0.25em] text-sm text-[#D4AF37] font-bold">
+                        <p className="font-serif uppercase tracking-[0.25em] text-sm text-[#D4AF37] font-bold">
                             {welcomeCopy.eventDate}
                         </p>
                     </div>

@@ -37,7 +37,7 @@ const Welcomevarianttext1: React.FC<WelcomeVariantProps> = ({ onOpen }) => {
                 </div>
 
                 <div className="mt-8 space-y-2">
-                    <p className="uppercase tracking-[0.2em] text-xs text-[#555] font-sans font-medium">
+                    <p className="uppercase tracking-[0.2em] text-xs text-[#555] font-serif font-medium">
                         {welcomeCopy.eventDate}
                     </p>
                     <div className="h-4" /> {/* Spacer */}

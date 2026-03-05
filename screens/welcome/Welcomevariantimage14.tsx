@@ -41,7 +41,7 @@ const Welcomevariantimage14: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
 
                 {/* Top Section */}
                 <div className="flex flex-col items-center space-y-12">
-                    <p className="uppercase tracking-[0.25em] text-[10px] font-medium text-[#C5A059] mt-8">
+                    <p className="font-sans uppercase tracking-[0.25em] text-[10px] font-medium text-[#C5A059] mt-8">
                         {welcomeCopy.welcomeText}
                     </p>
 

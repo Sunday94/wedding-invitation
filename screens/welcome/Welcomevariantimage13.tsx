@@ -32,7 +32,7 @@ const Welcomevariantimage13: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
 
             {/* Top Content */}
             <div className="relative z-10 w-full flex flex-col items-center pt-8">
-                <p className="uppercase tracking-[0.25em] text-[10px] font-bold text-white mb-6 drop-shadow-md">
+                <p className="font-sans uppercase tracking-[0.25em] text-[10px] font-bold text-white mb-6 drop-shadow-md">
                     {welcomeCopy.welcomeText}
                 </p>
 
@@ -58,12 +58,12 @@ const Welcomevariantimage13: React.FC<WelcomeVariantProps> = ({ onOpen, showImag
 
                 {/* Date & Venue */}
                 <div className="text-center space-y-6">
-                    <p className="uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-lg">
+                    <p className="font-serif uppercase tracking-[0.2em] text-sm font-bold text-white drop-shadow-lg">
                         {welcomeCopy.eventDate}
                     </p>
 
                     <div className="space-y-1">
-                        <h2 className="text-2xl font-display font-bold text-white uppercase tracking-wider drop-shadow-lg">
+                        <h2 className="text-2xl font-serif font-bold text-white uppercase tracking-wider drop-shadow-lg">
                             {welcomeCopy.weddingVenue}
                         </h2>
                         <p className="text-[10px] uppercase tracking-[0.25em] text-white/90 font-medium">
