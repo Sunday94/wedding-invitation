@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data } from '../../data';
-import { getWelcomeCopy } from '../welcome/welcomeTextBindings';
+import { getWelcomeCopy, splitLoadingText } from '../welcome/welcomeTextBindings';
 
 interface LoadingVariantProps {
     onFinished: () => void;
@@ -10,10 +10,8 @@ const LoadingVariant1: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
     const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
     const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
-    const loadingTextLines = loadingText
-        .split(/<br\s*\/?>|\n/gi)
-        .map((line) => line.trim())
-        .filter(Boolean);
+    const titleText = loadingText || 'Preparing our special day...';
+    const loadingTextLines = splitLoadingText(titleText);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -62,7 +60,7 @@ const LoadingVariant1: React.FC<LoadingVariantProps> = ({ onFinished }) => {
                                     {index < loadingTextLines.length - 1 ? <br /> : null}
                                 </React.Fragment>
                             ))
-                            : loadingText}
+                            : titleText}
                     </h1>
                     <p className="text-[10px] tracking-[0.25em] uppercase font-sans font-bold text-[#c8a96e] mt-4">
                         Please Wait

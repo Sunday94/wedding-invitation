@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data } from '../../data';
-import { getWelcomeCopy } from '../welcome/welcomeTextBindings';
+import { getWelcomeCopy, splitLoadingText } from '../welcome/welcomeTextBindings';
 
 interface LoadingVariantProps {
     onFinished: () => void;
@@ -8,11 +8,13 @@ interface LoadingVariantProps {
 
 const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
-    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
     const fallbackParts = data.couple.initials.split('&');
     const leftName = brideDisplayName || fallbackParts[0]?.trim() || '';
     const rightName = groomDisplayName || fallbackParts[1]?.trim() || '';
     const hasBothNames = Boolean(leftName && rightName);
+    const titleText = loadingText || 'Preparing our special day...';
+    const loadingTextLines = splitLoadingText(titleText);
 
     useEffect(() => {
         // Animation duration approx 4-5 seconds to be "slowly"
@@ -64,7 +66,14 @@ const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
             {/* Top Text */}
             <div className="relative z-10 pt-4">
                 <h1 className="text-4xl italic text-white leading-tight font-serif">
-                    Preparing our special day...
+                    {loadingTextLines.length > 1
+                        ? loadingTextLines.map((line, index) => (
+                            <React.Fragment key={`${line}-${index}`}>
+                                {line}
+                                {index < loadingTextLines.length - 1 ? <br /> : null}
+                            </React.Fragment>
+                        ))
+                        : titleText}
                 </h1>
                 <p className="text-[10px] tracking-[0.25em] uppercase font-sans text-gray-400 mt-3 font-medium">
                     PLEASE WAIT
@@ -90,7 +99,7 @@ const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
                 <div className="w-12 h-[1px] bg-[#C8A022]/40 my-3" />
 
                 <p className="text-[10px] tracking-[0.2em] uppercase font-sans text-white/90 font-medium">
-                    {data.wedding.dateString}
+                    {eventDate || data.wedding.dateString}
                 </p>
             </div>
 

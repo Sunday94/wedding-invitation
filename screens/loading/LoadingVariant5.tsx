@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data } from '../../data';
-import { getWelcomeCopy } from '../welcome/welcomeTextBindings';
+import { getWelcomeCopy, splitLoadingText } from '../welcome/welcomeTextBindings';
 
 interface LoadingVariantProps {
     onFinished: () => void;
@@ -8,8 +8,10 @@ interface LoadingVariantProps {
 
 const LoadingVariant5: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
-    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
     const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
+    const titleText = loadingText || 'Preparing our special day...';
+    const loadingTextLines = splitLoadingText(titleText);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -51,7 +53,14 @@ const LoadingVariant5: React.FC<LoadingVariantProps> = ({ onFinished }) => {
             {/* Top Text */}
             <div className={`text-center space-y-3 z-10 mt-16 transition-opacity duration-1000 ${progress > 10 ? 'opacity-100' : 'opacity-0'}`}>
                 <h1 className="text-3xl italic leading-tight text-[#d4813a]">
-                    Preparing our special<br />day...
+                    {loadingTextLines.length > 1
+                        ? loadingTextLines.map((line, index) => (
+                            <React.Fragment key={`${line}-${index}`}>
+                                {line}
+                                {index < loadingTextLines.length - 1 ? <br /> : null}
+                            </React.Fragment>
+                        ))
+                        : titleText}
                 </h1>
                 <p className="text-[10px] tracking-[0.25em] uppercase font-sans font-medium text-[#d4813a] opacity-70 mt-4">
                     Please Wait
@@ -132,7 +141,7 @@ const LoadingVariant5: React.FC<LoadingVariantProps> = ({ onFinished }) => {
                     </p>
                     <div className="w-8 h-[1px] mx-auto mt-2 bg-[#d4813a] opacity-40" />
                     <p className="text-[10px] mt-3 tracking-[0.2em] uppercase font-bold text-[#d4813a] opacity-60">
-                        {data.wedding.dateString}
+                        {eventDate || data.wedding.dateString}
                     </p>
                 </div>
             </div>

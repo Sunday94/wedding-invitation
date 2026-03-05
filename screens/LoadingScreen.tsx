@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { data } from '../data';
-import { getWelcomeCopy } from './welcome/welcomeTextBindings';
+import { getWelcomeCopy, splitLoadingText } from './welcome/welcomeTextBindings';
 
 interface LoadingScreenProps {
   onFinished: () => void;
@@ -9,8 +9,10 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
   const [progress, setProgress] = useState(0);
-  const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+  const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
   const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
+  const titleText = loadingText || 'Preparing our special day...';
+  const loadingTextLines = splitLoadingText(titleText);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -53,7 +55,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
 
         <div className="text-center space-y-4">
           <h1 className="serif-font text-3xl italic text-wedding-charcoal dark:text-white leading-tight">
-            Preparing our <br />special day...
+            {loadingTextLines.length > 1
+              ? loadingTextLines.map((line, index) => (
+                <React.Fragment key={`${line}-${index}`}>
+                  {line}
+                  {index < loadingTextLines.length - 1 ? <br /> : null}
+                </React.Fragment>
+              ))
+              : titleText}
           </h1>
           <p className="text-wedding-charcoal/60 dark:text-gray-400 text-xs tracking-widest uppercase font-bold">
             Please Wait
@@ -73,7 +82,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
           <p className="serif-font text-[clamp(0.95rem,5.8vw,1.4rem)] text-wedding-gold tracking-[0.08em] whitespace-nowrap">{coupleDisplay}</p>
           <div className="w-8 h-[1px] bg-wedding-gold/30 mx-auto mt-2"></div>
           <p className="text-[10px] text-wedding-charcoal/40 dark:text-gray-500 mt-3 tracking-[0.2em] uppercase font-bold">
-            {data.wedding.dateString}
+            {eventDate || data.wedding.dateString}
           </p>
         </div>
       </div>

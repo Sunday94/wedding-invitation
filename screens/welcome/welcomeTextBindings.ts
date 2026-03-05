@@ -59,6 +59,12 @@ export const splitDisplayName = (fullName: string): [string, string] => {
     return [parts[0], parts.slice(1).join(' ')];
 };
 
+export const splitLoadingText = (value: string): string[] =>
+    value
+        .split(/<br\s*\/?>|\n/gi)
+        .map((line) => line.trim())
+        .filter(Boolean);
+
 export const getWelcomeCopy = (): WelcomeCopy => {
     const source = data as unknown as SourceMap;
     const wedding = (source.wedding ?? {}) as SourceMap;
@@ -77,7 +83,7 @@ export const getWelcomeCopy = (): WelcomeCopy => {
         ),
         loadingText: pickString(
             runtimeWelcomeSource.loading_text,
-            pickString(source.loading_text, 'Preparing our special day...')
+            pickString(source.loading_text, '')
         ),
         brideDisplayName: pickString(
             runtimeWelcomeSource.bride_display_name,

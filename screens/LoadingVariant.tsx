@@ -7,7 +7,7 @@ import LoadingVariant3 from './loading/LoadingVariant3';
 import LoadingVariant4 from './loading/LoadingVariant4';
 import LoadingVariant5 from './loading/LoadingVariant5';
 import LoadingVariant6 from './loading/LoadingVariant6';
-import { getWelcomeCopy } from './welcome/welcomeTextBindings';
+import { getWelcomeCopy, splitLoadingText } from './welcome/welcomeTextBindings';
 
 export interface LoadingTheme {
     bgColor: string;
@@ -43,7 +43,7 @@ interface LoadingVariantProps {
 }
 
 const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }) => {
-    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const { brideDisplayName, groomDisplayName, loadingText, eventDate } = getWelcomeCopy();
     const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
 
     if (variantId === 1) {
@@ -68,6 +68,8 @@ const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }
     const [progress, setProgress] = useState(0);
     const theme = LOADING_THEMES[variantId] ?? LOADING_THEMES[1];
     const isDark = variantId === 6 || variantId === 15;
+    const titleText = loadingText || theme.titleText;
+    const loadingTextLines = splitLoadingText(titleText);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -120,7 +122,14 @@ const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }
                         className="serif-font text-3xl italic leading-tight"
                         style={{ color: isDark ? '#ffffff' : '#3a3a3a' }}
                     >
-                        {theme.titleText}
+                        {loadingTextLines.length > 1
+                            ? loadingTextLines.map((line, index) => (
+                                <React.Fragment key={`${line}-${index}`}>
+                                    {line}
+                                    {index < loadingTextLines.length - 1 ? <br /> : null}
+                                </React.Fragment>
+                            ))
+                            : titleText}
                     </h1>
                     {theme.subtitleText && (
                         <p
@@ -153,7 +162,7 @@ const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }
                         className="text-[10px] mt-3 tracking-[0.2em] uppercase font-bold"
                         style={{ color: isDark ? '#666666' : '#aaaaaa' }}
                     >
-                        {data.wedding.dateString}
+                        {eventDate || data.wedding.dateString}
                     </p>
                 </div>
             </div>
