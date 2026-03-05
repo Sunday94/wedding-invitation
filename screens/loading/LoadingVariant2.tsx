@@ -91,7 +91,7 @@ const LoadingVariant2: React.FC<LoadingVariantProps> = ({ onFinished }) => {
                 <div className="w-32 h-[1px] bg-[#c8a96e]/30" />
 
                 <div className="text-center space-y-4">
-                    <p className="text-3xl tracking-widest text-[#c8a96e] font-serif">
+                    <p className="text-[clamp(1rem,6vw,1.6rem)] tracking-[0.1em] text-[#c8a96e] font-serif whitespace-nowrap">
                         {coupleDisplay}
                     </p>
 

@@ -105,7 +105,7 @@ const LoadingVariant6: React.FC<LoadingVariantProps> = ({ onFinished }) => {
 
             {/* Bottom Info */}
             <div className="z-10 text-center opacity-70">
-                <p className="serif-font text-2xl tracking-widest text-[#4a9eff] italic mb-2">
+                <p className="serif-font text-[clamp(0.95rem,5.8vw,1.4rem)] tracking-[0.08em] text-[#4a9eff] italic mb-2 whitespace-nowrap">
                     {coupleDisplay}
                 </p>
                 <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-gray-400">

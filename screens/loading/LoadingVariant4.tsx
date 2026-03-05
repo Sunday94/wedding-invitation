@@ -110,7 +110,7 @@ const LoadingVariant4: React.FC<LoadingVariantProps> = ({ onFinished }) => {
 
                 <div className="flex items-center gap-4">
                     <div className="w-16 h-[1px] bg-[#c8a96e]/30" />
-                    <p className="text-3xl tracking-widest text-[#c8a96e] font-serif italic font-bold">
+                    <p className="text-[clamp(1rem,6vw,1.6rem)] tracking-[0.1em] text-[#c8a96e] font-serif italic font-bold whitespace-nowrap">
                         {coupleDisplay}
                     </p>
                     <div className="w-16 h-[1px] bg-[#c8a96e]/30" />

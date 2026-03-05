@@ -145,7 +145,7 @@ const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }
                 </div>
 
                 <div className="text-center">
-                    <p className="serif-font text-2xl tracking-widest" style={{ color: theme.progressColor }}>
+                    <p className="serif-font text-[clamp(0.95rem,5.8vw,1.4rem)] tracking-[0.08em] whitespace-nowrap" style={{ color: theme.progressColor }}>
                         {coupleDisplay}
                     </p>
                     <div className="w-8 h-[1px] mx-auto mt-2" style={{ backgroundColor: `${theme.progressColor}40` }} />

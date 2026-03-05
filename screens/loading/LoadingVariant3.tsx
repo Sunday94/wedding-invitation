@@ -73,15 +73,15 @@ const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
 
             {/* Bottom Right Text */}
             <div className="relative z-10 flex flex-col items-end pb-4">
-                <div className="flex flex-row items-baseline gap-1">
-                    <span className="text-5xl text-[#C8A022] font-serif">
+                <div className="flex flex-row items-baseline gap-1 whitespace-nowrap">
+                    <span className="text-[clamp(1.2rem,6.5vw,2.2rem)] text-[#C8A022] font-serif whitespace-nowrap">
                         {leftName}
                     </span>
                     {hasBothNames && (
-                        <span className="text-2xl text-[#C8A022] font-serif italic opacity-80">&</span>
+                        <span className="text-[clamp(0.95rem,4vw,1.4rem)] text-[#C8A022] font-serif italic opacity-80 whitespace-nowrap">&</span>
                     )}
                     {rightName && (
-                        <span className="text-5xl text-[#C8A022] font-serif">
+                        <span className="text-[clamp(1.2rem,6.5vw,2.2rem)] text-[#C8A022] font-serif whitespace-nowrap">
                             {rightName}
                         </span>
                     )}

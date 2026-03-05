@@ -127,7 +127,7 @@ const LoadingVariant5: React.FC<LoadingVariantProps> = ({ onFinished }) => {
             {/* Bottom Content: Initials & Date */}
             <div className={`w-full flex flex-col items-center gap-1 mb-12 z-10 transition-opacity duration-700 ${progress > 80 ? 'opacity-100' : 'opacity-0'}`}>
                 <div className="text-center">
-                    <p className="serif-font text-4xl tracking-widest text-[#d4813a] italic">
+                    <p className="serif-font text-[clamp(1rem,6.5vw,1.8rem)] tracking-[0.1em] text-[#d4813a] italic whitespace-nowrap">
                         {coupleDisplay}
                     </p>
                     <div className="w-8 h-[1px] mx-auto mt-2 bg-[#d4813a] opacity-40" />

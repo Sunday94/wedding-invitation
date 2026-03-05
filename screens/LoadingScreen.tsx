@@ -70,7 +70,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
         </div>
 
         <div className="text-center">
-          <p className="serif-font text-2xl text-wedding-gold tracking-widest">{coupleDisplay}</p>
+          <p className="serif-font text-[clamp(0.95rem,5.8vw,1.4rem)] text-wedding-gold tracking-[0.08em] whitespace-nowrap">{coupleDisplay}</p>
           <div className="w-8 h-[1px] bg-wedding-gold/30 mx-auto mt-2"></div>
           <p className="text-[10px] text-wedding-charcoal/40 dark:text-gray-500 mt-3 tracking-[0.2em] uppercase font-bold">
             {data.wedding.dateString}
