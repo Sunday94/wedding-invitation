@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy } from '../welcome/welcomeTextBindings';
 
 interface LoadingVariantProps {
     onFinished: () => void;
@@ -7,6 +8,8 @@ interface LoadingVariantProps {
 
 const LoadingVariant6: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
+    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -103,7 +106,7 @@ const LoadingVariant6: React.FC<LoadingVariantProps> = ({ onFinished }) => {
             {/* Bottom Info */}
             <div className="z-10 text-center opacity-70">
                 <p className="serif-font text-2xl tracking-widest text-[#4a9eff] italic mb-2">
-                    {data.couple.initials}
+                    {coupleDisplay}
                 </p>
                 <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-gray-400">
                     {data.wedding.dateString}

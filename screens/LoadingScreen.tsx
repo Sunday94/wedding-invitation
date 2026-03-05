@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { data } from '../data';
+import { getWelcomeCopy } from './welcome/welcomeTextBindings';
 
 interface LoadingScreenProps {
   onFinished: () => void;
@@ -8,6 +9,8 @@ interface LoadingScreenProps {
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
   const [progress, setProgress] = useState(0);
+  const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+  const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -67,7 +70,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinished }) => {
         </div>
 
         <div className="text-center">
-          <p className="serif-font text-2xl text-wedding-gold tracking-widest">{data.couple.initials}</p>
+          <p className="serif-font text-2xl text-wedding-gold tracking-widest">{coupleDisplay}</p>
           <div className="w-8 h-[1px] bg-wedding-gold/30 mx-auto mt-2"></div>
           <p className="text-[10px] text-wedding-charcoal/40 dark:text-gray-500 mt-3 tracking-[0.2em] uppercase font-bold">
             {data.wedding.dateString}

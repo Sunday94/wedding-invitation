@@ -7,6 +7,7 @@ import LoadingVariant3 from './loading/LoadingVariant3';
 import LoadingVariant4 from './loading/LoadingVariant4';
 import LoadingVariant5 from './loading/LoadingVariant5';
 import LoadingVariant6 from './loading/LoadingVariant6';
+import { getWelcomeCopy } from './welcome/welcomeTextBindings';
 
 export interface LoadingTheme {
     bgColor: string;
@@ -42,6 +43,9 @@ interface LoadingVariantProps {
 }
 
 const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }) => {
+    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const coupleDisplay = [brideDisplayName, groomDisplayName].filter(Boolean).join(' & ') || data.couple.initials;
+
     if (variantId === 1) {
         return <LoadingVariant1 onFinished={onFinished} />;
     }
@@ -142,7 +146,7 @@ const LoadingVariant: React.FC<LoadingVariantProps> = ({ onFinished, variantId }
 
                 <div className="text-center">
                     <p className="serif-font text-2xl tracking-widest" style={{ color: theme.progressColor }}>
-                        {data.couple.initials}
+                        {coupleDisplay}
                     </p>
                     <div className="w-8 h-[1px] mx-auto mt-2" style={{ backgroundColor: `${theme.progressColor}40` }} />
                     <p

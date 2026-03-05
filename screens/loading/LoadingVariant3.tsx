@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { data } from '../../data';
+import { getWelcomeCopy } from '../welcome/welcomeTextBindings';
 
 interface LoadingVariantProps {
     onFinished: () => void;
@@ -7,6 +8,11 @@ interface LoadingVariantProps {
 
 const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
     const [progress, setProgress] = useState(0);
+    const { brideDisplayName, groomDisplayName } = getWelcomeCopy();
+    const fallbackParts = data.couple.initials.split('&');
+    const leftName = brideDisplayName || fallbackParts[0]?.trim() || '';
+    const rightName = groomDisplayName || fallbackParts[1]?.trim() || '';
+    const hasBothNames = Boolean(leftName && rightName);
 
     useEffect(() => {
         // Animation duration approx 4-5 seconds to be "slowly"
@@ -69,12 +75,16 @@ const LoadingVariant3: React.FC<LoadingVariantProps> = ({ onFinished }) => {
             <div className="relative z-10 flex flex-col items-end pb-4">
                 <div className="flex flex-row items-baseline gap-1">
                     <span className="text-5xl text-[#C8A022] font-serif">
-                        {data.couple.initials.split('&')[0]}
+                        {leftName}
                     </span>
-                    <span className="text-2xl text-[#C8A022] font-serif italic opacity-80">&</span>
-                    <span className="text-5xl text-[#C8A022] font-serif">
-                        {data.couple.initials.split('&')[1]}
-                    </span>
+                    {hasBothNames && (
+                        <span className="text-2xl text-[#C8A022] font-serif italic opacity-80">&</span>
+                    )}
+                    {rightName && (
+                        <span className="text-5xl text-[#C8A022] font-serif">
+                            {rightName}
+                        </span>
+                    )}
                 </div>
 
                 <div className="w-12 h-[1px] bg-[#C8A022]/40 my-3" />
