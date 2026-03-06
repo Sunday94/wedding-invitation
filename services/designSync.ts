@@ -3,6 +3,7 @@ export interface RemoteDesignSettings {
     loading_design_id?: string | null;
     dashboard_design_id?: string | null;
     front_image_url?: string | null;
+    couple_image_url?: string | null;
     welcome_text?: string | null;
     loading_text?: string | null;
     bride_groom_font?: string | null;

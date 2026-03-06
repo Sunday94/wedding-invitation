@@ -83,6 +83,34 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
                             <h2 className="serif-font text-3xl mb-2 italic" style={{ color: theme.textPrimary }}>
                                 {data.couple.story.title}
                             </h2>
+                            <div className="mb-5 w-full max-w-xs">
+                                <p
+                                    className="text-[9px] font-bold uppercase tracking-[0.28em] italic"
+                                    style={{ color: theme.textSecondary }}
+                                >
+                                    Bride &amp; Groom
+                                </p>
+                                <div className="mt-2 flex flex-col items-center gap-1">
+                                    <p
+                                        className="serif-font text-base leading-tight"
+                                        style={{ color: theme.textPrimary }}
+                                    >
+                                        {data.couple.fullNames.partner1}
+                                    </p>
+                                    <span
+                                        className="text-[10px] font-bold uppercase tracking-[0.35em]"
+                                        style={{ color: theme.accentColor }}
+                                    >
+                                        &
+                                    </span>
+                                    <p
+                                        className="serif-font text-base leading-tight"
+                                        style={{ color: theme.textPrimary }}
+                                    >
+                                        {data.couple.fullNames.partner2}
+                                    </p>
+                                </div>
+                            </div>
                             <div className="w-12 h-0.5 mb-6 opacity-40" style={{ backgroundColor: theme.accentColor }} />
                             <p className="text-sm leading-relaxed mb-8 px-2 font-light italic" style={{ color: theme.textSecondary }}>
                                 "{data.couple.story.text}"

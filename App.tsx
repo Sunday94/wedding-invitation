@@ -17,8 +17,13 @@ const URL_OVERRIDE_KEYS = ['welcome', 'loading', 'dashboard'] as const;
 
 type SavedSelection = SyncedDesignSelection;
 type RemoteWelcomeDetails = {
+  bride_name?: string | null;
+  groom_name?: string | null;
   bride_display_name?: string | null;
   groom_display_name?: string | null;
+  meet_year?: string | number | null;
+  engaged_year?: string | number | null;
+  description?: string | null;
   event_date?: string | null;
   wedding_venue?: string | null;
   wedding_address?: string | null;
@@ -26,12 +31,37 @@ type RemoteWelcomeDetails = {
 type RemoteOverview = {
   event_date?: string | null;
 } | null;
+const DEFAULT_BRIDE_NAME = data.couple.fullNames.partner1;
+const DEFAULT_GROOM_NAME = data.couple.fullNames.partner2;
 const DEFAULT_WELCOME_IMAGE = data.wedding.welcomeImage;
-const normalizeFrontImageUrl = (value: unknown): string => {
+const DEFAULT_COUPLE_IMAGE = data.couple.story.image;
+const DEFAULT_STORY_TEXT = data.couple.story.text;
+const DEFAULT_MEET_YEAR = data.couple.story.metYear;
+const DEFAULT_ENGAGED_YEAR = data.couple.story.engagedYear;
+
+const normalizeRemoteImageUrl = (value: unknown): string => {
   if (typeof value !== 'string') return '';
   const trimmed = value.trim();
   if (!trimmed || trimmed === 'null' || trimmed === 'undefined') return '';
   return trimmed;
+};
+
+const normalizeRemoteText = (value: unknown): string => {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed || trimmed === 'null' || trimmed === 'undefined') return '';
+  return trimmed;
+};
+
+const normalizeRemoteYear = (value: unknown): number | null => {
+  if (typeof value === 'number' && Number.isInteger(value)) return value;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const parsed = Number.parseInt(trimmed, 10);
+    if (!Number.isNaN(parsed)) return parsed;
+  }
+  return null;
 };
 
 const hasUrlOverrides = (): boolean => {
@@ -141,7 +171,23 @@ const InnerApp: React.FC = () => {
         const remoteDesign = remoteDesignResult.status === 'fulfilled' ? remoteDesignResult.value : null;
         const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
         const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
-        const remoteWelcomeImage = normalizeFrontImageUrl(remoteDesign?.front_image_url);
+        const remoteWelcomeImage = normalizeRemoteImageUrl(remoteDesign?.front_image_url);
+        const remoteCoupleImage = normalizeRemoteImageUrl(remoteDesign?.couple_image_url);
+        const remoteBrideName = normalizeRemoteText(remoteDetails?.bride_name);
+        const remoteGroomName = normalizeRemoteText(remoteDetails?.groom_name);
+        const remoteStoryText = normalizeRemoteText(remoteDetails?.description);
+        const remoteMeetYear = normalizeRemoteYear(remoteDetails?.meet_year);
+        const remoteEngagedYear = normalizeRemoteYear(remoteDetails?.engaged_year);
+        const brideName = remoteBrideName || DEFAULT_BRIDE_NAME;
+        const groomName = remoteGroomName || DEFAULT_GROOM_NAME;
+
+        data.couple.fullNames.partner1 = brideName;
+        data.couple.fullNames.partner2 = groomName;
+        data.couple.names = `${brideName} & ${groomName}`;
+        data.couple.story.image = remoteCoupleImage || DEFAULT_COUPLE_IMAGE;
+        data.couple.story.text = remoteStoryText || DEFAULT_STORY_TEXT;
+        data.couple.story.metYear = remoteMeetYear ?? DEFAULT_MEET_YEAR;
+        data.couple.story.engagedYear = remoteEngagedYear ?? DEFAULT_ENGAGED_YEAR;
         data.wedding.welcomeImage = remoteWelcomeImage || DEFAULT_WELCOME_IMAGE;
         applyRemoteFontSettings(remoteDesign);
 
