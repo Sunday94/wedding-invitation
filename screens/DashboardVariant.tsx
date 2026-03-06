@@ -69,10 +69,10 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
                 </div>
 
                 {/* Main Content */}
-                <main className={`relative z-10 max-w-2xl mx-auto w-full ${variantId === 16 ? 'px-6 mt-6' : 'pl-14 pr-5 -mt-8'} space-y-6`}>
+                <main className={`relative z-10 max-w-2xl mx-auto w-full ${variantId === 16 ? 'px-6 mt-6' : 'px-6 -mt-8'} space-y-6`}>
                     {/* Story card */}
                     <section
-                        className={`rounded-2xl shadow-xl p-8 relative ${variantId === 16 ? '' : 'sm:-ml-9'}`}
+                        className="rounded-2xl shadow-xl p-8 relative"
                         style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
                     >
                         <div className="flex flex-col items-center text-center">
@@ -103,7 +103,7 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
 
                     {/* Venue Location card */}
                     <section
-                        className={`rounded-2xl shadow-xl p-8 relative ${variantId === 16 ? '' : 'sm:-ml-9'}`}
+                        className="rounded-2xl shadow-xl p-8 relative"
                         style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
                     >
                         <div className="flex flex-col items-center text-center">
@@ -139,7 +139,7 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
 
                     {/* Attire card */}
                     <section
-                        className={`rounded-2xl shadow-xl p-8 relative ${variantId === 16 ? '' : 'sm:-ml-9'}`}
+                        className="rounded-2xl shadow-xl p-8 relative"
                         style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
                     >
                         <div className="flex flex-col items-center text-center">
