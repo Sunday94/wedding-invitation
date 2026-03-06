@@ -7,6 +7,7 @@ import RSVPPopup from '../components/RSVPPopup';
 import WishlistPopup from '../components/WishlistPopup';
 import CalendarPopup from '../components/CalendarPopup';
 import { data } from '../data';
+import { WishlistItem } from '../types';
 
 export interface DashboardTheme {
     bgColor: string;
@@ -47,9 +48,14 @@ const MANDATORY_SECTIONS: DashboardSectionId[] = ['overview', 'timeline'];
 interface DashboardVariantProps {
     variantId: number;
     visibleSections?: DashboardSectionId[];
+    wishlistItems?: WishlistItem[];
 }
 
-const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId, visibleSections = MANDATORY_SECTIONS }) => {
+const DashboardVariant: React.FC<DashboardVariantProps> = ({
+    variantId,
+    visibleSections = MANDATORY_SECTIONS,
+    wishlistItems = []
+}) => {
     const theme = DASHBOARD_THEMES[variantId] ?? DASHBOARD_THEMES[1];
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isRSVPOpen, setIsRSVPOpen] = React.useState(false);
@@ -293,12 +299,12 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId, visibleS
 
                     {/* Quick Actions */}
                     {quickActions.length > 0 && (
-                        <section className={`grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 pb-6 ${variantId === 16 ? '' : 'sm:-ml-9'}`}>
+                        <section className={`flex flex-nowrap items-start gap-3 pt-2 pb-6 overflow-x-auto no-scrollbar ${variantId === 16 ? '' : 'sm:-ml-9'}`}>
                             {quickActions.map(({ sectionId, icon, label, onClick }) => (
                                 <button
                                     key={sectionId}
                                     onClick={onClick}
-                                    className="flex flex-col items-center gap-2 group outline-none"
+                                    className="min-w-[72px] flex flex-col items-center gap-2 group outline-none"
                                 >
                                     <div
                                         className="w-14 h-14 rounded-full shadow-md flex items-center justify-center group-active:scale-90 transition-all duration-200"
@@ -368,6 +374,7 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId, visibleS
                     textSecondary={theme.textSecondary}
                     cardBg={theme.cardBg}
                     cardBorder={theme.cardBorder}
+                    items={wishlistItems}
                 />
             )}
 
