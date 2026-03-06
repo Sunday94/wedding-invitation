@@ -13,12 +13,16 @@ interface RSVPPopupProps {
 }
 
 const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, textPrimary, textSecondary, cardBg, cardBorder }) => {
+    const formId = 'wedding-rsvp-form';
     const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
     const [groupType, setGroupType] = useState('Single');
     const [numPeople, setNumPeople] = useState('1');
     const [rsvpStatus, setRsvpStatus] = useState('Accept');
     const [reason, setReason] = useState('');
     const [dietary, setDietary] = useState<string[]>(['NONE']);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState('');
 
     // Auto-lock logic for Number of People
     useEffect(() => {
@@ -28,6 +32,11 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
             setNumPeople('1');
         }
     }, [groupType]);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        setSubmitMessage('');
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -57,11 +66,17 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const trimmedName = name.trim();
+        const trimmedPhone = phone.trim();
+        if (!trimmedName) return;
+        setIsSubmitting(true);
+        setSubmitMessage('');
 
         const rsvpData = {
             client_id: FRONTEND_CLIENT_ID,
-            name,
-            email: `${name.toLowerCase().replace(/\s+/g, '.')}@example.com`, // Placeholder email
+            name: trimmedName,
+            email: `${trimmedName.toLowerCase().replace(/\s+/g, '.')}@example.com`, // Placeholder email
+            phone: trimmedPhone || null,
             status: rsvpStatus === 'Accept' ? 'Confirmed' : 'Decline',
             group_name: groupType,
             meal_choice: dietary.join(', '),
@@ -69,21 +84,32 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
         };
 
         try {
-            const response = await fetch(buildApiUrl('/api/guests'), {
+            const response = await fetch(buildApiUrl('/api/guests', { client_id: FRONTEND_CLIENT_ID }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(rsvpData)
             });
 
             if (response.ok) {
-                console.log('RSVP Submitted successfully');
-                onClose();
-                // Optional: Show success toast
+                setSubmitMessage('RSVP submitted successfully.');
+                setName('');
+                setPhone('');
+                setGroupType('Single');
+                setNumPeople('1');
+                setRsvpStatus('Accept');
+                setReason('');
+                setDietary(['NONE']);
+                setTimeout(() => onClose(), 500);
             } else {
-                console.error('RSVP submission failed');
+                const errorData = await response.json().catch(() => null) as { error?: string } | null;
+                const errorText = errorData?.error || `RSVP submission failed (${response.status}).`;
+                setSubmitMessage(errorText);
             }
         } catch (error) {
             console.error('Error submitting RSVP:', error);
+            setSubmitMessage('Unable to submit RSVP right now. Please try again.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -116,7 +142,7 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
                 </div>
 
                 {/* Form Content */}
-                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+                <form id={formId} onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
                     {/* Name */}
                     <div className="space-y-2">
                         <label className="text-[11px] font-bold uppercase tracking-wider block" style={{ color: textSecondary }}>Full Name</label>
@@ -130,6 +156,22 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
                                 className="w-full pl-10 pr-4 py-3 rounded-xl border focus:ring-0 transition-all text-sm placeholder:opacity-30"
                                 style={{ backgroundColor: cardBg, color: textPrimary, borderColor: cardBorder }}
                                 placeholder="Enter your full name"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="space-y-2">
+                        <label className="text-[11px] font-bold uppercase tracking-wider block" style={{ color: textSecondary }}>Phone Number</label>
+                        <div className="relative">
+                            <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-lg" style={{ color: textSecondary, opacity: 0.5 }}>call</span>
+                            <input
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full pl-10 pr-4 py-3 rounded-xl border focus:ring-0 transition-all text-sm placeholder:opacity-30"
+                                style={{ backgroundColor: cardBg, color: textPrimary, borderColor: cardBorder }}
+                                placeholder="Enter your phone number"
                             />
                         </div>
                     </div>
@@ -246,14 +288,20 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
 
                 {/* Submit button */}
                 <div className="p-6 border-t" style={{ backgroundColor: accentColor + '08', borderColor: cardBorder }}>
+                    {submitMessage && (
+                        <p className="mb-3 text-xs font-semibold" style={{ color: submitMessage.toLowerCase().includes('success') ? accentColor : '#ef4444' }}>
+                            {submitMessage}
+                        </p>
+                    )}
                     <button
-                        onClick={handleSubmit}
-                        disabled={!name}
-                        className={`w-full py-4 rounded-2xl shadow-lg shadow-black/5 font-bold uppercase tracking-[0.2em] text-sm transition-all active:scale-95 flex items-center justify-center gap-2 ${!name ? 'cursor-not-allowed shadow-none opacity-50' : 'text-white'}`}
-                        style={name ? { backgroundColor: accentColor, color: cardBg } : { backgroundColor: textSecondary, color: cardBg }}
+                        type="submit"
+                        form={formId}
+                        disabled={!name.trim() || isSubmitting}
+                        className={`w-full py-4 rounded-2xl shadow-lg shadow-black/5 font-bold uppercase tracking-[0.2em] text-sm transition-all active:scale-95 flex items-center justify-center gap-2 ${!name.trim() || isSubmitting ? 'cursor-not-allowed shadow-none opacity-50' : 'text-white'}`}
+                        style={name.trim() && !isSubmitting ? { backgroundColor: accentColor, color: cardBg } : { backgroundColor: textSecondary, color: cardBg }}
                     >
-                        <span>Submit RSVP</span>
-                        <span className="material-icons text-xl">send</span>
+                        <span>{isSubmitting ? 'Submitting...' : 'Submit RSVP'}</span>
+                        <span className="material-icons text-xl">{isSubmitting ? 'hourglass_top' : 'send'}</span>
                     </button>
                 </div>
             </div>
