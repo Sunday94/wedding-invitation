@@ -299,7 +299,7 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({
 
                     {/* Quick Actions */}
                     {quickActions.length > 0 && (
-                        <section className={`flex flex-nowrap items-start gap-3 pt-2 pb-6 overflow-x-auto no-scrollbar ${variantId === 16 ? '' : 'sm:-ml-9'}`}>
+                        <section className="flex flex-nowrap justify-center items-start gap-3 pt-2 pb-6 overflow-x-auto no-scrollbar">
                             {quickActions.map(({ sectionId, icon, label, onClick }) => (
                                 <button
                                     key={sectionId}
