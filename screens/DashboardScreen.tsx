@@ -64,6 +64,7 @@ const DashboardScreen: React.FC = () => {
               icon={event.icon}
               location={event.location}
               address={event.address}
+              description={event.description}
               imageSrc={event.image}
               isLast={event.isLast}
               details={event.details}

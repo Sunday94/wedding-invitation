@@ -58,6 +58,7 @@ export interface TimelineEvent {
   icon: string;
   location: string;
   address: string;
+  description?: string;
   image?: string;
   details?: TimelineDetail[];
   isLast?: boolean;

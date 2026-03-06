@@ -2,7 +2,9 @@ export interface RemoteDesignSettings {
     front_design_id?: string | null;
     loading_design_id?: string | null;
     dashboard_design_id?: string | null;
+    visible_sections?: string[] | null;
     front_image_url?: string | null;
+    dashboard_image_url?: string | null;
     couple_image_url?: string | null;
     welcome_text?: string | null;
     loading_text?: string | null;

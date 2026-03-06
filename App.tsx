@@ -14,8 +14,12 @@ export type ScreenState = 'selector' | 'welcome' | 'loading' | 'dashboard';
 
 const STORAGE_KEY = 'weddingDesignSelection';
 const URL_OVERRIDE_KEYS = ['welcome', 'loading', 'dashboard'] as const;
+const VISIBLE_SECTION_IDS = ['overview', 'timeline', 'banquet', 'gift', 'rsvp', 'calendar'] as const;
+const VISIBLE_SECTION_ID_SET = new Set<string>(VISIBLE_SECTION_IDS);
+const DEFAULT_VISIBLE_SECTIONS: VisibleSectionId[] = ['overview', 'timeline'];
 
 type SavedSelection = SyncedDesignSelection;
+type VisibleSectionId = typeof VISIBLE_SECTION_IDS[number];
 type RemoteWelcomeDetails = {
   bride_name?: string | null;
   groom_name?: string | null;
@@ -31,13 +35,31 @@ type RemoteWelcomeDetails = {
 type RemoteOverview = {
   event_date?: string | null;
 } | null;
+type RemoteTimelineEvent = {
+  id?: string | null;
+  time?: string | null;
+  title?: string | null;
+  location?: string | null;
+  icon?: string | null;
+  description?: string | null;
+  category?: string | null;
+};
+type RemoteTimeline = RemoteTimelineEvent[] | null;
+
 const DEFAULT_BRIDE_NAME = data.couple.fullNames.partner1;
 const DEFAULT_GROOM_NAME = data.couple.fullNames.partner2;
 const DEFAULT_WELCOME_IMAGE = data.wedding.welcomeImage;
+const DEFAULT_DASHBOARD_IMAGE = data.wedding.venue.image;
 const DEFAULT_COUPLE_IMAGE = data.couple.story.image;
 const DEFAULT_STORY_TEXT = data.couple.story.text;
 const DEFAULT_MEET_YEAR = data.couple.story.metYear;
 const DEFAULT_ENGAGED_YEAR = data.couple.story.engagedYear;
+const DEFAULT_WEDDING_DATE = data.wedding.date;
+const DEFAULT_WEDDING_DATE_STRING = data.wedding.dateString;
+const DEFAULT_TIMELINE = data.timeline.map((event) => ({
+  ...event,
+  details: event.details?.map((detail) => ({ ...detail }))
+}));
 
 const normalizeRemoteImageUrl = (value: unknown): string => {
   if (typeof value !== 'string') return '';
@@ -62,6 +84,53 @@ const normalizeRemoteYear = (value: unknown): number | null => {
     if (!Number.isNaN(parsed)) return parsed;
   }
   return null;
+};
+
+const normalizeRemoteEventDate = (value: unknown): string => {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed || trimmed === 'null' || trimmed === 'undefined') return '';
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return trimmed;
+};
+
+const formatEventDateLabel = (value: string): string => {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return DEFAULT_WEDDING_DATE_STRING;
+  return parsed.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+
+const toTimelineSortKey = (raw: string): number => {
+  const match = raw.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return Number.MAX_SAFE_INTEGER;
+  const hourRaw = Number.parseInt(match[1], 10);
+  const minute = Number.parseInt(match[2], 10);
+  if (Number.isNaN(hourRaw) || Number.isNaN(minute)) return Number.MAX_SAFE_INTEGER;
+  const meridiem = match[3].toUpperCase();
+  const hour24 = (hourRaw % 12) + (meridiem === 'PM' ? 12 : 0);
+  return hour24 * 60 + minute;
+};
+
+const withTimelineLastFlag = (events: typeof data.timeline): typeof data.timeline =>
+  events.map((event, index) => ({
+    ...event,
+    isLast: index === events.length - 1
+  }));
+
+const normalizeVisibleSections = (value: unknown): VisibleSectionId[] => {
+  const normalized = Array.isArray(value)
+    ? value
+      .map((entry) => (typeof entry === 'string' ? entry.trim().toLowerCase() : ''))
+      .filter((entry): entry is VisibleSectionId => VISIBLE_SECTION_ID_SET.has(entry))
+    : [];
+
+  return Array.from(new Set<VisibleSectionId>([...DEFAULT_VISIBLE_SECTIONS, ...normalized]));
 };
 
 const hasUrlOverrides = (): boolean => {
@@ -142,6 +211,14 @@ const fetchRemoteOverview = async (): Promise<RemoteOverview> => {
   return response.json();
 };
 
+const fetchRemoteTimeline = async (): Promise<RemoteTimeline> => {
+  const response = await fetch(buildApiUrl('/api/timeline', { client_id: FRONTEND_CLIENT_ID }));
+  if (!response.ok) {
+    throw new Error(`Timeline sync failed with status ${response.status}`);
+  }
+  return response.json();
+};
+
 const InnerApp: React.FC = () => {
   const { clearSelection } = useDesign();
   const [isSyncLoading, setIsSyncLoading] = useState(true);
@@ -152,6 +229,7 @@ const InnerApp: React.FC = () => {
   });
 
   const [activeVariants, setActiveVariants] = useState<SavedSelection>(() => getInitialActiveVariants());
+  const [visibleSections, setVisibleSections] = useState<VisibleSectionId[]>(DEFAULT_VISIBLE_SECTIONS);
 
   useEffect(() => {
     let isCancelled = false;
@@ -161,34 +239,69 @@ const InnerApp: React.FC = () => {
       resetFontSettings();
 
       try {
-        const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult] = await Promise.allSettled([
+        const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult, remoteTimelineResult] = await Promise.allSettled([
           fetchRemoteDesignSettings(),
           fetchRemoteWelcomeDetails(),
-          fetchRemoteOverview()
+          fetchRemoteOverview(),
+          fetchRemoteTimeline()
         ]);
         if (isCancelled) return;
 
         const remoteDesign = remoteDesignResult.status === 'fulfilled' ? remoteDesignResult.value : null;
         const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
         const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
+        const remoteTimeline = remoteTimelineResult.status === 'fulfilled' ? remoteTimelineResult.value : null;
+        setVisibleSections(normalizeVisibleSections(remoteDesign?.visible_sections));
         const remoteWelcomeImage = normalizeRemoteImageUrl(remoteDesign?.front_image_url);
+        const remoteDashboardImage = normalizeRemoteImageUrl(remoteDesign?.dashboard_image_url);
         const remoteCoupleImage = normalizeRemoteImageUrl(remoteDesign?.couple_image_url);
         const remoteBrideName = normalizeRemoteText(remoteDetails?.bride_name);
         const remoteGroomName = normalizeRemoteText(remoteDetails?.groom_name);
+        const remoteBrideDisplayName = normalizeRemoteText(remoteDetails?.bride_display_name);
+        const remoteGroomDisplayName = normalizeRemoteText(remoteDetails?.groom_display_name);
         const remoteStoryText = normalizeRemoteText(remoteDetails?.description);
         const remoteMeetYear = normalizeRemoteYear(remoteDetails?.meet_year);
         const remoteEngagedYear = normalizeRemoteYear(remoteDetails?.engaged_year);
+        const remoteEventDate = normalizeRemoteEventDate(remoteDetails?.event_date || remoteOverview?.event_date);
         const brideName = remoteBrideName || DEFAULT_BRIDE_NAME;
         const groomName = remoteGroomName || DEFAULT_GROOM_NAME;
+        const brideDisplayName = remoteBrideDisplayName || brideName;
+        const groomDisplayName = remoteGroomDisplayName || groomName;
 
         data.couple.fullNames.partner1 = brideName;
         data.couple.fullNames.partner2 = groomName;
-        data.couple.names = `${brideName} & ${groomName}`;
+        data.couple.names = `${brideDisplayName} & ${groomDisplayName}`;
         data.couple.story.image = remoteCoupleImage || DEFAULT_COUPLE_IMAGE;
         data.couple.story.text = remoteStoryText || DEFAULT_STORY_TEXT;
         data.couple.story.metYear = remoteMeetYear ?? DEFAULT_MEET_YEAR;
         data.couple.story.engagedYear = remoteEngagedYear ?? DEFAULT_ENGAGED_YEAR;
+        data.wedding.date = remoteEventDate || DEFAULT_WEDDING_DATE;
+        data.wedding.dateString = remoteEventDate
+          ? formatEventDateLabel(remoteEventDate)
+          : DEFAULT_WEDDING_DATE_STRING;
         data.wedding.welcomeImage = remoteWelcomeImage || DEFAULT_WELCOME_IMAGE;
+        data.wedding.venue.image = remoteDashboardImage || DEFAULT_DASHBOARD_IMAGE;
+        if (Array.isArray(remoteTimeline)) {
+          const mappedTimeline = remoteTimeline
+            .map((event) => ({
+              time: normalizeRemoteText(event.time) || 'TBD',
+              title: normalizeRemoteText(event.title) || 'Timeline Event',
+              icon: normalizeRemoteText(event.icon) || 'event',
+              location: normalizeRemoteText(event.location) || 'Location TBA',
+              address: '',
+              description: normalizeRemoteText(event.description)
+            }))
+            .sort((a, b) => toTimelineSortKey(a.time) - toTimelineSortKey(b.time));
+
+          data.timeline = withTimelineLastFlag(mappedTimeline);
+        } else {
+          data.timeline = withTimelineLastFlag(
+            DEFAULT_TIMELINE.map((event) => ({
+              ...event,
+              details: event.details?.map((detail) => ({ ...detail }))
+            }))
+          );
+        }
         applyRemoteFontSettings(remoteDesign);
 
         setWelcomeCopySource({
@@ -196,7 +309,7 @@ const InnerApp: React.FC = () => {
           loading_text: remoteDesign?.loading_text ?? null,
           bride_display_name: remoteDetails?.bride_display_name ?? null,
           groom_display_name: remoteDetails?.groom_display_name ?? null,
-          event_date: remoteDetails?.event_date || remoteOverview?.event_date || null,
+          event_date: remoteEventDate || null,
           wedding_venue: remoteDetails?.wedding_venue ?? null,
           wedding_address: remoteDetails?.wedding_address ?? null
         });
@@ -283,7 +396,10 @@ const InnerApp: React.FC = () => {
         )}
 
         {currentScreen === 'dashboard' && (
-          <DashboardVariant variantId={activeVariants.dashboard} />
+          <DashboardVariant
+            variantId={activeVariants.dashboard}
+            visibleSections={visibleSections}
+          />
         )}
       </div>
     </div>

@@ -41,16 +41,65 @@ export const DASHBOARD_THEMES: Record<number, DashboardTheme> = {
     16: { bgColor: '#fdfbf7', cardBg: '#ffffff', cardBorder: 'rgba(200,169,110,0.15)', heroOverlay: 'rgba(0,0,0,0.40)', accentColor: '#c8a96e', textPrimary: '#1a1a1a', textSecondary: '#888888', footerBg: 'rgba(255,255,255,0.95)', actionBtnBg: '#ffffff', actionBtnBorder: 'rgba(200,169,110,0.2)', actionIconColor: '#c8a96e' },
 };
 
+type DashboardSectionId = 'overview' | 'timeline' | 'banquet' | 'gift' | 'rsvp' | 'calendar';
+const MANDATORY_SECTIONS: DashboardSectionId[] = ['overview', 'timeline'];
+
 interface DashboardVariantProps {
     variantId: number;
+    visibleSections?: DashboardSectionId[];
 }
 
-const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
+const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId, visibleSections = MANDATORY_SECTIONS }) => {
     const theme = DASHBOARD_THEMES[variantId] ?? DASHBOARD_THEMES[1];
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isRSVPOpen, setIsRSVPOpen] = React.useState(false);
     const [isWishlistOpen, setIsWishlistOpen] = React.useState(false);
     const [isCalendarOpen, setIsCalendarOpen] = React.useState(false);
+    const [isTimelineCollapsed, setIsTimelineCollapsed] = React.useState(false);
+
+    const visibleSectionSet = React.useMemo(
+        () => new Set<DashboardSectionId>([...MANDATORY_SECTIONS, ...visibleSections]),
+        [visibleSections]
+    );
+
+    const isSectionVisible = React.useCallback(
+        (id: DashboardSectionId) => visibleSectionSet.has(id),
+        [visibleSectionSet]
+    );
+
+    React.useEffect(() => {
+        if (!isSectionVisible('banquet')) setIsMenuOpen(false);
+        if (!isSectionVisible('rsvp')) setIsRSVPOpen(false);
+        if (!isSectionVisible('gift')) setIsWishlistOpen(false);
+        if (!isSectionVisible('calendar')) setIsCalendarOpen(false);
+    }, [isSectionVisible]);
+
+    const quickActions = [
+        {
+            sectionId: 'rsvp' as const,
+            icon: 'how_to_reg',
+            label: 'RSVP',
+            onClick: () => setIsRSVPOpen(true)
+        },
+        {
+            sectionId: 'banquet' as const,
+            icon: 'flatware',
+            label: 'Banquet\nMenu',
+            onClick: () => setIsMenuOpen(true)
+        },
+        {
+            sectionId: 'calendar' as const,
+            icon: 'calendar_today',
+            label: 'Add to\nCalendar',
+            onClick: () => setIsCalendarOpen(true)
+        },
+        {
+            sectionId: 'gift' as const,
+            icon: 'card_giftcard',
+            label: 'Wish List',
+            onClick: () => setIsWishlistOpen(true)
+        }
+    ].filter(({ sectionId }) => isSectionVisible(sectionId));
 
     return (
         <div
@@ -70,188 +119,201 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
 
                 {/* Main Content */}
                 <main className={`relative z-10 max-w-2xl mx-auto w-full ${variantId === 16 ? 'px-6 mt-6' : 'px-6 -mt-8'} space-y-6`}>
-                    {/* Story card */}
-                    <section
-                        className="rounded-2xl shadow-xl p-8 relative"
-                        style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
-                    >
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-32 h-32 rounded-full border-4 p-1 mb-6 shadow-md overflow-hidden"
-                                style={{ borderColor: theme.accentColor + '60' }}>
-                                <img alt="Couple" className="w-full h-full object-cover rounded-full" src={data.couple.story.image} />
-                            </div>
-                            <h2 className="serif-font text-3xl mb-2 italic" style={{ color: theme.textPrimary }}>
-                                {data.couple.story.title}
-                            </h2>
-                            <div className="mb-5 w-full max-w-xs">
-                                <p
-                                    className="text-[9px] font-bold uppercase tracking-[0.28em] italic"
-                                    style={{ color: theme.textSecondary }}
-                                >
-                                    Bride &amp; Groom
-                                </p>
-                                <div className="mt-2 flex flex-col items-center gap-1">
-                                    <p
-                                        className="serif-font text-base leading-tight"
-                                        style={{ color: theme.textPrimary }}
-                                    >
-                                        {data.couple.fullNames.partner1}
-                                    </p>
-                                    <span
-                                        className="text-[10px] font-bold uppercase tracking-[0.35em]"
-                                        style={{ color: theme.accentColor }}
-                                    >
-                                        &
-                                    </span>
-                                    <p
-                                        className="serif-font text-base leading-tight"
-                                        style={{ color: theme.textPrimary }}
-                                    >
-                                        {data.couple.fullNames.partner2}
+                    {isSectionVisible('overview') && (
+                        <>
+                            {/* Story card */}
+                            <section
+                                className="rounded-2xl shadow-xl p-8 relative"
+                                style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
+                            >
+                                <div className="flex flex-col items-center text-center">
+                                    <div className="w-32 h-32 rounded-full border-4 p-1 mb-6 shadow-md overflow-hidden"
+                                        style={{ borderColor: theme.accentColor + '60' }}>
+                                        <img alt="Couple" className="w-full h-full object-cover rounded-full" src={data.couple.story.image} />
+                                    </div>
+                                    <h2 className="serif-font text-3xl mb-2 italic" style={{ color: theme.textPrimary }}>
+                                        {data.couple.story.title}
+                                    </h2>
+                                    <div className="mb-5 w-full max-w-xs">
+                                        <p
+                                            className="text-[9px] font-bold uppercase tracking-[0.28em] italic"
+                                            style={{ color: theme.textSecondary }}
+                                        >
+                                            Bride &amp; Groom
+                                        </p>
+                                        <div className="mt-2 flex flex-col items-center gap-1">
+                                            <p
+                                                className="serif-font text-base leading-tight"
+                                                style={{ color: theme.textPrimary }}
+                                            >
+                                                {data.couple.fullNames.partner1}
+                                            </p>
+                                            <span
+                                                className="text-[10px] font-bold uppercase tracking-[0.35em]"
+                                                style={{ color: theme.accentColor }}
+                                            >
+                                                &
+                                            </span>
+                                            <p
+                                                className="serif-font text-base leading-tight"
+                                                style={{ color: theme.textPrimary }}
+                                            >
+                                                {data.couple.fullNames.partner2}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="w-12 h-0.5 mb-6 opacity-40" style={{ backgroundColor: theme.accentColor }} />
+                                    <p className="text-sm leading-relaxed mb-8 px-2 font-light italic" style={{ color: theme.textSecondary }}>
+                                        "{data.couple.story.text}"
                                     </p>
                                 </div>
-                            </div>
-                            <div className="w-12 h-0.5 mb-6 opacity-40" style={{ backgroundColor: theme.accentColor }} />
-                            <p className="text-sm leading-relaxed mb-8 px-2 font-light italic" style={{ color: theme.textSecondary }}>
-                                "{data.couple.story.text}"
-                            </p>
-                        </div>
-                        <div className="flex justify-between items-center pt-6 border-t" style={{ borderColor: theme.cardBorder }}>
-                            <div className="text-center flex-1">
-                                <p className="text-[9px] font-bold uppercase tracking-widest mb-1 italic" style={{ color: theme.textSecondary }}>Met in</p>
-                                <p className="serif-font text-xl" style={{ color: theme.accentColor }}>{data.couple.story.metYear}</p>
-                            </div>
-                            <div className="h-8 w-px" style={{ backgroundColor: theme.cardBorder }} />
-                            <div className="text-center flex-1">
-                                <p className="text-[9px] font-bold uppercase tracking-widest mb-1 italic" style={{ color: theme.textSecondary }}>Engaged in</p>
-                                <p className="serif-font text-xl" style={{ color: theme.accentColor }}>{data.couple.story.engagedYear}</p>
-                            </div>
-                        </div>
-                    </section>
+                                <div className="flex justify-between items-center pt-6 border-t" style={{ borderColor: theme.cardBorder }}>
+                                    <div className="text-center flex-1">
+                                        <p className="text-[9px] font-bold uppercase tracking-widest mb-1 italic" style={{ color: theme.textSecondary }}>Met in</p>
+                                        <p className="serif-font text-xl" style={{ color: theme.accentColor }}>{data.couple.story.metYear}</p>
+                                    </div>
+                                    <div className="h-8 w-px" style={{ backgroundColor: theme.cardBorder }} />
+                                    <div className="text-center flex-1">
+                                        <p className="text-[9px] font-bold uppercase tracking-widest mb-1 italic" style={{ color: theme.textSecondary }}>Engaged in</p>
+                                        <p className="serif-font text-xl" style={{ color: theme.accentColor }}>{data.couple.story.engagedYear}</p>
+                                    </div>
+                                </div>
+                            </section>
 
-                    {/* Venue Location card */}
-                    <section
-                        className="rounded-2xl shadow-xl p-8 relative"
-                        style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
-                    >
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
-                                style={{ backgroundColor: theme.accentColor + '10' }}>
-                                <span className="material-icons" style={{ color: theme.accentColor }}>location_on</span>
-                            </div>
-                            <h2 className="serif-font text-2xl mb-1 italic" style={{ color: theme.textPrimary }}>
-                                {data.wedding.venue.name}
-                            </h2>
-                            <p className="text-[10px] font-bold uppercase tracking-widest mb-4 italic" style={{ color: theme.textSecondary }}>
-                                {data.wedding.venue.location}
-                            </p>
-                            <div className="w-12 h-0.5 mb-5 opacity-40" style={{ backgroundColor: theme.accentColor }} />
-                            <p className="text-sm leading-relaxed mb-8 px-4 font-light italic" style={{ color: theme.textSecondary }}>
-                                {data.wedding.venue.address}
-                            </p>
-                            <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.wedding.venue.name + " " + data.wedding.venue.address)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[10px] font-bold uppercase tracking-[0.2em] px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
-                                style={{
-                                    backgroundColor: theme.accentColor,
-                                    color: theme.cardBg,
-                                    boxShadow: `0 4px 15px ${theme.accentColor}40`
-                                }}
+                            {/* Venue Location card */}
+                            <section
+                                className="rounded-2xl shadow-xl p-8 relative"
+                                style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
                             >
-                                Get Directions
-                            </a>
-                        </div>
-                    </section>
+                                <div className="flex flex-col items-center text-center">
+                                    <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                                        style={{ backgroundColor: theme.accentColor + '10' }}>
+                                        <span className="material-icons" style={{ color: theme.accentColor }}>location_on</span>
+                                    </div>
+                                    <h2 className="serif-font text-2xl mb-1 italic" style={{ color: theme.textPrimary }}>
+                                        {data.wedding.venue.name}
+                                    </h2>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest mb-4 italic" style={{ color: theme.textSecondary }}>
+                                        {data.wedding.venue.location}
+                                    </p>
+                                    <div className="w-12 h-0.5 mb-5 opacity-40" style={{ backgroundColor: theme.accentColor }} />
+                                    <p className="text-sm leading-relaxed mb-8 px-4 font-light italic" style={{ color: theme.textSecondary }}>
+                                        {data.wedding.venue.address}
+                                    </p>
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.wedding.venue.name + " " + data.wedding.venue.address)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[10px] font-bold uppercase tracking-[0.2em] px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+                                        style={{
+                                            backgroundColor: theme.accentColor,
+                                            color: theme.cardBg,
+                                            boxShadow: `0 4px 15px ${theme.accentColor}40`
+                                        }}
+                                    >
+                                        Get Directions
+                                    </a>
+                                </div>
+                            </section>
 
-                    {/* Attire card */}
-                    <section
-                        className="rounded-2xl shadow-xl p-8 relative"
-                        style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
-                    >
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
-                                style={{ backgroundColor: theme.accentColor + '10' }}>
-                                <span className="material-icons" style={{ color: theme.accentColor }}>checkroom</span>
-                            </div>
-                            <h2 className="serif-font text-2xl mb-1 italic" style={{ color: theme.textPrimary }}>
-                                Dress Code
-                            </h2>
-                            <p className="text-[10px] font-bold uppercase tracking-widest mb-4 italic" style={{ color: theme.textSecondary }}>
-                                {data.wedding.attire.title}
-                            </p>
-                            <div className="w-12 h-0.5 mb-5 opacity-40" style={{ backgroundColor: theme.accentColor }} />
-                            <p className="text-sm leading-relaxed px-4 font-light italic" style={{ color: theme.textSecondary }}>
-                                {data.wedding.attire.description}
-                            </p>
-                        </div>
-                    </section>
+                            {/* Attire card */}
+                            <section
+                                className="rounded-2xl shadow-xl p-8 relative"
+                                style={{ backgroundColor: theme.cardBg, borderWidth: 1, borderColor: theme.cardBorder }}
+                            >
+                                <div className="flex flex-col items-center text-center">
+                                    <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm"
+                                        style={{ backgroundColor: theme.accentColor + '10' }}>
+                                        <span className="material-icons" style={{ color: theme.accentColor }}>checkroom</span>
+                                    </div>
+                                    <h2 className="serif-font text-2xl mb-1 italic" style={{ color: theme.textPrimary }}>
+                                        Dress Code
+                                    </h2>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest mb-4 italic" style={{ color: theme.textSecondary }}>
+                                        {data.wedding.attire.title}
+                                    </p>
+                                    <div className="w-12 h-0.5 mb-5 opacity-40" style={{ backgroundColor: theme.accentColor }} />
+                                    <p className="text-sm leading-relaxed px-4 font-light italic" style={{ color: theme.textSecondary }}>
+                                        {data.wedding.attire.description}
+                                    </p>
+                                </div>
+                            </section>
+                        </>
+                    )}
 
                     {/* Timeline */}
-                    <div className={`relative ${variantId === 16 ? 'px-2' : ''}`}>
-                        {data.timeline.map((event, index) => (
-                            <TimelineItem
-                                key={index}
-                                time={event.time}
-                                title={event.title}
-                                icon={event.icon}
-                                location={event.location}
-                                address={event.address}
-                                imageSrc={event.image}
-                                isLast={event.isLast}
-                                details={event.details}
-                                accentColor={theme.accentColor}
-                                textPrimary={theme.textPrimary}
-                                textSecondary={theme.textSecondary}
-                                cardBg={theme.cardBg}
-                                cardBorder={theme.cardBorder}
-                            />
-                        ))}
-                    </div>
+                    {isSectionVisible('timeline') && (
+                        <section className={`${variantId === 16 ? 'px-2' : ''}`}>
+                            <div
+                                className="rounded-xl border shadow-sm px-4 py-3 mb-4 flex items-center justify-between"
+                                style={{ backgroundColor: theme.cardBg, borderColor: theme.cardBorder }}
+                            >
+                                <h2 className="serif-font text-2xl italic" style={{ color: theme.textPrimary }}>
+                                    Timeline
+                                </h2>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsTimelineCollapsed((prev) => !prev)}
+                                    aria-expanded={!isTimelineCollapsed}
+                                    className="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors"
+                                    style={{ color: theme.accentColor, borderColor: theme.cardBorder }}
+                                >
+                                    <span className="material-icons text-sm">
+                                        {isTimelineCollapsed ? 'expand_more' : 'expand_less'}
+                                    </span>
+                                    {isTimelineCollapsed ? 'Expand' : 'Collapse'}
+                                </button>
+                            </div>
+
+                            {!isTimelineCollapsed && (
+                                <div className="relative">
+                                    {data.timeline.map((event, index) => (
+                                        <TimelineItem
+                                            key={index}
+                                            time={event.time}
+                                            title={event.title}
+                                            icon={event.icon}
+                                            location={event.location}
+                                            address={event.address}
+                                            description={event.description}
+                                            imageSrc={event.image}
+                                            isLast={event.isLast}
+                                            details={event.details}
+                                            accentColor={theme.accentColor}
+                                            textPrimary={theme.textPrimary}
+                                            textSecondary={theme.textSecondary}
+                                            cardBg={theme.cardBg}
+                                            cardBorder={theme.cardBorder}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                    )}
 
                     {/* Quick Actions */}
-                    <section className={`grid grid-cols-4 gap-2 pt-2 pb-6 ${variantId === 16 ? '' : 'sm:-ml-9'}`}>
-                        {[
-                            {
-                                icon: 'how_to_reg',
-                                label: 'RSVP',
-                                onClick: () => setIsRSVPOpen(true)
-                            },
-                            {
-                                icon: 'flatware',
-                                label: 'Banquet\nMenu',
-                                onClick: () => setIsMenuOpen(true)
-                            },
-                            {
-                                icon: 'calendar_today',
-                                label: 'Add to\nCalendar',
-                                onClick: () => setIsCalendarOpen(true)
-                            },
-                            {
-                                icon: 'card_giftcard',
-                                label: 'Wish List',
-                                onClick: () => setIsWishlistOpen(true)
-                            },
-                        ].map(({ icon, label, onClick }) => (
-                            <button
-                                key={icon}
-                                onClick={onClick}
-                                className="flex flex-col items-center gap-2 group outline-none"
-                            >
-                                <div
-                                    className="w-14 h-14 rounded-full shadow-md flex items-center justify-center group-active:scale-90 transition-all duration-200"
-                                    style={{ backgroundColor: theme.actionBtnBg, border: `1px solid ${theme.actionBtnBorder}` }}
+                    {quickActions.length > 0 && (
+                        <section className={`grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 pb-6 ${variantId === 16 ? '' : 'sm:-ml-9'}`}>
+                            {quickActions.map(({ sectionId, icon, label, onClick }) => (
+                                <button
+                                    key={sectionId}
+                                    onClick={onClick}
+                                    className="flex flex-col items-center gap-2 group outline-none"
                                 >
-                                    <span className="material-icons" style={{ color: theme.actionIconColor }}>{icon}</span>
-                                </div>
-                                <span className="text-[10px] font-bold uppercase tracking-tighter text-center leading-none whitespace-pre-line"
-                                    style={{ color: theme.textSecondary }}>
-                                    {label}
-                                </span>
-                            </button>
-                        ))}
-                    </section>
+                                    <div
+                                        className="w-14 h-14 rounded-full shadow-md flex items-center justify-center group-active:scale-90 transition-all duration-200"
+                                        style={{ backgroundColor: theme.actionBtnBg, border: `1px solid ${theme.actionBtnBorder}` }}
+                                    >
+                                        <span className="material-icons" style={{ color: theme.actionIconColor }}>{icon}</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold uppercase tracking-tighter text-center leading-none whitespace-pre-line"
+                                        style={{ color: theme.textSecondary }}>
+                                        {label}
+                                    </span>
+                                </button>
+                            ))}
+                        </section>
+                    )}
                 </main>
             </div>
 
@@ -273,45 +335,53 @@ const DashboardVariant: React.FC<DashboardVariantProps> = ({ variantId }) => {
                 </div>
             </footer>
 
-            <MenuPopup
-                isOpen={isMenuOpen}
-                onClose={() => setIsMenuOpen(false)}
-                accentColor={theme.accentColor}
-                textPrimary={theme.textPrimary}
-                textSecondary={theme.textSecondary}
-                cardBg={theme.cardBg}
-                cardBorder={theme.cardBorder}
-            />
+            {isSectionVisible('banquet') && (
+                <MenuPopup
+                    isOpen={isMenuOpen}
+                    onClose={() => setIsMenuOpen(false)}
+                    accentColor={theme.accentColor}
+                    textPrimary={theme.textPrimary}
+                    textSecondary={theme.textSecondary}
+                    cardBg={theme.cardBg}
+                    cardBorder={theme.cardBorder}
+                />
+            )}
 
-            <RSVPPopup
-                isOpen={isRSVPOpen}
-                onClose={() => setIsRSVPOpen(false)}
-                accentColor={theme.accentColor}
-                textPrimary={theme.textPrimary}
-                textSecondary={theme.textSecondary}
-                cardBg={theme.cardBg}
-                cardBorder={theme.cardBorder}
-            />
+            {isSectionVisible('rsvp') && (
+                <RSVPPopup
+                    isOpen={isRSVPOpen}
+                    onClose={() => setIsRSVPOpen(false)}
+                    accentColor={theme.accentColor}
+                    textPrimary={theme.textPrimary}
+                    textSecondary={theme.textSecondary}
+                    cardBg={theme.cardBg}
+                    cardBorder={theme.cardBorder}
+                />
+            )}
 
-            <WishlistPopup
-                isOpen={isWishlistOpen}
-                onClose={() => setIsWishlistOpen(false)}
-                accentColor={theme.accentColor}
-                textPrimary={theme.textPrimary}
-                textSecondary={theme.textSecondary}
-                cardBg={theme.cardBg}
-                cardBorder={theme.cardBorder}
-            />
+            {isSectionVisible('gift') && (
+                <WishlistPopup
+                    isOpen={isWishlistOpen}
+                    onClose={() => setIsWishlistOpen(false)}
+                    accentColor={theme.accentColor}
+                    textPrimary={theme.textPrimary}
+                    textSecondary={theme.textSecondary}
+                    cardBg={theme.cardBg}
+                    cardBorder={theme.cardBorder}
+                />
+            )}
 
-            <CalendarPopup
-                isOpen={isCalendarOpen}
-                onClose={() => setIsCalendarOpen(false)}
-                accentColor={theme.accentColor}
-                textPrimary={theme.textPrimary}
-                textSecondary={theme.textSecondary}
-                cardBg={theme.cardBg}
-                cardBorder={theme.cardBorder}
-            />
+            {isSectionVisible('calendar') && (
+                <CalendarPopup
+                    isOpen={isCalendarOpen}
+                    onClose={() => setIsCalendarOpen(false)}
+                    accentColor={theme.accentColor}
+                    textPrimary={theme.textPrimary}
+                    textSecondary={theme.textSecondary}
+                    cardBg={theme.cardBg}
+                    cardBorder={theme.cardBorder}
+                />
+            )}
         </div>
     );
 };
