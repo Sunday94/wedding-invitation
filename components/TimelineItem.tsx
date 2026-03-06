@@ -22,15 +22,15 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   accentColor, textPrimary, textSecondary, cardBg, cardBorder
 }) => {
   return (
-    <div className="relative pl-8 mb-10 last:mb-0">
+    <div className="relative pl-14 mb-10 last:mb-0">
       {/* Vertical line connector */}
-      {!isLast && <div className="absolute left-[12px] top-6 bottom-[-40px] w-[1px]" style={{ backgroundColor: accentColor + '33' }}></div>}
+      {!isLast && <div className="absolute left-[46px] top-6 bottom-[-40px] w-[1px]" style={{ backgroundColor: accentColor + '33' }}></div>}
 
       {/* Dot */}
-      <div className="absolute left-[8px] top-2.5 w-[9px] h-[9px] rounded-full z-10 shadow-sm" style={{ backgroundColor: accentColor }}></div>
+      <div className="absolute left-[42px] top-2.5 w-[9px] h-[9px] rounded-full z-10 shadow-sm" style={{ backgroundColor: accentColor }}></div>
 
       {/* Time label */}
-      <div className="absolute -left-12 top-0.5 w-12 text-right pr-4">
+      <div className="absolute left-0 top-0.5 w-10 text-right pr-2">
         <span className="text-[10px] font-bold uppercase leading-tight tracking-tighter whitespace-pre-wrap block" style={{ color: accentColor }}>
           {time.replace(' ', '\n')}
         </span>
