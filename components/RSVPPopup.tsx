@@ -69,6 +69,10 @@ const RSVPPopup: React.FC<RSVPPopupProps> = ({ isOpen, onClose, accentColor, tex
         const trimmedName = name.trim();
         const trimmedPhone = phone.trim();
         if (!trimmedName) return;
+        if (!FRONTEND_CLIENT_ID) {
+            setSubmitMessage('Invitation is not configured: missing client_id.');
+            return;
+        }
         setIsSubmitting(true);
         setSubmitMessage('');
 

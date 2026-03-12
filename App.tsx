@@ -9,6 +9,7 @@ import { buildApiUrl, FRONTEND_CLIENT_ID } from './services/apiConfig';
 import { mapRemoteDesignToSelection, RemoteDesignSettings, SyncedDesignSelection } from './services/designSync';
 import { applyRemoteFontSettings, resetFontSettings } from './services/fontSettings';
 import { setWelcomeCopySource } from './screens/welcome/welcomeTextBindings';
+import { WishlistItem } from './types';
 
 export type ScreenState = 'selector' | 'welcome' | 'loading' | 'dashboard';
 
@@ -45,6 +46,17 @@ type RemoteTimelineEvent = {
   category?: string | null;
 };
 type RemoteTimeline = RemoteTimelineEvent[] | null;
+type RemoteGiftRequest = {
+  id?: string | null;
+  name?: string | null;
+  price?: number | string | null;
+  status?: string | null;
+  category?: string | null;
+  imageUrl?: string | null;
+  sourceUrl?: string | null;
+  currency?: string | null;
+};
+type RemoteGiftRequests = RemoteGiftRequest[] | null;
 
 const DEFAULT_BRIDE_NAME = data.couple.fullNames.partner1;
 const DEFAULT_GROOM_NAME = data.couple.fullNames.partner2;
@@ -60,6 +72,7 @@ const DEFAULT_TIMELINE = data.timeline.map((event) => ({
   ...event,
   details: event.details?.map((detail) => ({ ...detail }))
 }));
+const DEFAULT_WISHLIST_IMAGE = 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop';
 
 const normalizeRemoteImageUrl = (value: unknown): string => {
   if (typeof value !== 'string') return '';
@@ -84,6 +97,22 @@ const normalizeRemoteYear = (value: unknown): number | null => {
     if (!Number.isNaN(parsed)) return parsed;
   }
   return null;
+};
+
+const normalizeRemoteNumber = (value: unknown): number => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string') {
+    const parsed = Number.parseFloat(value.trim());
+    if (!Number.isNaN(parsed) && Number.isFinite(parsed)) return parsed;
+  }
+  return 0;
+};
+
+const normalizeRemoteCurrency = (value: unknown): string => {
+  if (typeof value !== 'string') return 'USD';
+  const trimmed = value.trim().toUpperCase();
+  if (!trimmed || trimmed === 'null' || trimmed === 'undefined') return 'USD';
+  return /^[A-Z]{3}$/.test(trimmed) ? trimmed : 'USD';
 };
 
 const normalizeRemoteEventDate = (value: unknown): string => {
@@ -219,6 +248,14 @@ const fetchRemoteTimeline = async (): Promise<RemoteTimeline> => {
   return response.json();
 };
 
+const fetchRemoteGiftRequests = async (): Promise<RemoteGiftRequests> => {
+  const response = await fetch(buildApiUrl('/api/gift-requests', { client_id: FRONTEND_CLIENT_ID }));
+  if (!response.ok) {
+    throw new Error(`Gift requests sync failed with status ${response.status}`);
+  }
+  return response.json();
+};
+
 const InnerApp: React.FC = () => {
   const { clearSelection } = useDesign();
   const [isSyncLoading, setIsSyncLoading] = useState(true);
@@ -230,6 +267,7 @@ const InnerApp: React.FC = () => {
 
   const [activeVariants, setActiveVariants] = useState<SavedSelection>(() => getInitialActiveVariants());
   const [visibleSections, setVisibleSections] = useState<VisibleSectionId[]>(DEFAULT_VISIBLE_SECTIONS);
+  const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -237,13 +275,27 @@ const InnerApp: React.FC = () => {
     const syncDesignFromBackend = async () => {
       setWelcomeCopySource(null);
       resetFontSettings();
+      if (!FRONTEND_CLIENT_ID) {
+        console.warn('Invitation data sync skipped: missing client_id (set VITE_CLIENT_ID or pass ?client_id=...)');
+        setVisibleSections(DEFAULT_VISIBLE_SECTIONS);
+        setWishlistItems([]);
+        data.timeline = withTimelineLastFlag(
+          DEFAULT_TIMELINE.map((event) => ({
+            ...event,
+            details: event.details?.map((detail) => ({ ...detail }))
+          }))
+        );
+        setIsSyncLoading(false);
+        return;
+      }
 
       try {
-        const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult, remoteTimelineResult] = await Promise.allSettled([
+        const [remoteDesignResult, remoteDetailsResult, remoteOverviewResult, remoteTimelineResult, remoteGiftRequestsResult] = await Promise.allSettled([
           fetchRemoteDesignSettings(),
           fetchRemoteWelcomeDetails(),
           fetchRemoteOverview(),
-          fetchRemoteTimeline()
+          fetchRemoteTimeline(),
+          fetchRemoteGiftRequests()
         ]);
         if (isCancelled) return;
 
@@ -251,7 +303,26 @@ const InnerApp: React.FC = () => {
         const remoteDetails = remoteDetailsResult.status === 'fulfilled' ? remoteDetailsResult.value : null;
         const remoteOverview = remoteOverviewResult.status === 'fulfilled' ? remoteOverviewResult.value : null;
         const remoteTimeline = remoteTimelineResult.status === 'fulfilled' ? remoteTimelineResult.value : null;
+        const remoteGiftRequests = remoteGiftRequestsResult.status === 'fulfilled' ? remoteGiftRequestsResult.value : null;
         setVisibleSections(normalizeVisibleSections(remoteDesign?.visible_sections));
+        if (Array.isArray(remoteGiftRequests)) {
+          const mappedWishlistItems = remoteGiftRequests.map((gift, index) => {
+            const statusValue = normalizeRemoteText(gift.status).toLowerCase();
+            return {
+              id: normalizeRemoteText(gift.id) || `gift-${index + 1}`,
+              title: normalizeRemoteText(gift.name) || `Gift Item ${index + 1}`,
+              category: normalizeRemoteText(gift.category) || 'Others',
+              price: normalizeRemoteNumber(gift.price),
+              image: normalizeRemoteImageUrl(gift.imageUrl) || DEFAULT_WISHLIST_IMAGE,
+              purchased: ['purchased', 'claimed', 'fulfilled', 'completed', 'complete'].includes(statusValue),
+              sourceUrl: normalizeRemoteText(gift.sourceUrl) || undefined,
+              currency: normalizeRemoteCurrency(gift.currency)
+            } as WishlistItem;
+          });
+          setWishlistItems(mappedWishlistItems);
+        } else {
+          setWishlistItems([]);
+        }
         const remoteWelcomeImage = normalizeRemoteImageUrl(remoteDesign?.front_image_url);
         const remoteDashboardImage = normalizeRemoteImageUrl(remoteDesign?.dashboard_image_url);
         const remoteCoupleImage = normalizeRemoteImageUrl(remoteDesign?.couple_image_url);
@@ -399,6 +470,7 @@ const InnerApp: React.FC = () => {
           <DashboardVariant
             variantId={activeVariants.dashboard}
             visibleSections={visibleSections}
+            wishlistItems={wishlistItems}
           />
         )}
       </div>

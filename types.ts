@@ -85,6 +85,17 @@ export interface BanquetData {
   dishes: Dish[];
 }
 
+export interface WishlistItem {
+  id: string;
+  title: string;
+  category: string;
+  price: number;
+  image: string;
+  purchased: boolean;
+  sourceUrl?: string;
+  currency?: string;
+}
+
 export interface DummyData {
   couple: Couple;
   wedding: Wedding;
